@@ -5,6 +5,13 @@ const routes = [
     path: "/",
     name: "IndexView",
     component: () => import("@/views/IndexView.vue"),
+    children: [
+      {
+        path: "/user",
+        name: "UserLogin",
+        component: () => import("@/views/user/UserLogin.vue"),
+      },
+    ],
   },
 ];
 

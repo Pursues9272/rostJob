@@ -1,39 +1,33 @@
 <template>
   <div class="index-view">
+    <header>
       <SystemHeader></SystemHeader>
-    666
-    <el-button type="primary" @click="clickOt($event)">点击</el-button>
-
-    <el-button type="success" v-throttle="1000"> 节流指令 </el-button>
-
-    element图标库
-    <el-icon><FullScreen /></el-icon>
-
-    <p></p>
-    <input
-      type="text"
-      placeholder="聚焦指令"
-      value="自动聚焦指令封装"
-      v-focus
-    />
-
-    <p></p>
-    <el-input v-model="input" style="width: 300px" placeholder="非聚焦指令" />
-
-    <p></p>
-    阿里图标库
-    <i class="iconfont ic-suppress icon-donghua"></i>
-    <i class="iconfont ic-suppress icon-shipin"></i>
-    <i class="iconfont ic-suppress icon-jishufuwu"></i>
+    </header>
+    <main>
+      <div class="right-box">
+        <el-config-provider :locale="local">
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" :key="$route.path" />
+            </transition>
+          </router-view>
+        </el-config-provider>
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import SystemHeader from "@/components/SystemHeader.vue";
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
 export default {
+  components: {
+    SystemHeader,
+  },
   data() {
     return {
+      local: zhCn,
       input: "组件库输入框",
     };
   },
@@ -69,9 +63,36 @@ export default {
 <style lang="less" scoped>
 // 严格模式下必须存在内容
 .index-view {
-  .ic-suppress {
-    font-size: 20px;
-    margin: 0 5px;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  header {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  main {
+    width: 100%;
+    height: calc(100%);
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+    scrollbar-track-color: transparent;
+    -ms-scrollbar-track-color: transparent;
+    .right-box {
+      width: 100%;
+      height: 100%;
+      background-color: #f5f5f5;
+      // padding: 10px;
+    }
+  }
+  main::-webkit-scrollbar {
+    display: none;
   }
 }
 </style>
