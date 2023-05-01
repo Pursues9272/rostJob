@@ -43,7 +43,7 @@ export default {
       console.log(this.$request);
       this.$request
         .post("/backend/backUser/list", httIt)
-        .then(res => {
+        .then((res) => {
           console.log("list=>", res);
         })
         .catch((error) => {
@@ -58,12 +58,12 @@ export default {
 // 严格模式下必须存在内容
 .index-view {
   width: 100%;
-  
+
   .ic-suppress {
     font-size: 20px;
     margin: 0 5px;
   }
-  .index-main{
+  .index-main {
     width: 1170px;
     height: auto;
     // background: red;
