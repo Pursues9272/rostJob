@@ -14,6 +14,9 @@
         </el-config-provider>
       </div>
     </main>
+    <footer>
+      <SystemFooter></SystemFooter>
+    </footer>
   </div>
 </template>
 
@@ -21,9 +24,12 @@
 // @ is an alias to /src
 import SystemHeader from "@/components/SystemHeader.vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import SystemFooter from "@/components/SystemFooter.vue";
+
 export default {
   components: {
     SystemHeader,
+    SystemFooter
   },
   data() {
     return {
@@ -67,22 +73,27 @@ export default {
   height: 100vh;
   box-sizing: border-box;
   overflow: hidden;
+  overflow: auto;
+  height: auto;
+  
   header {
     width: 100%;
     box-sizing: border-box;
   }
   main {
     width: 100%;
-    height: calc(100%);
+    height: calc(100% - 90px);
     box-sizing: border-box;
     display: flex;
     flex-flow: row nowrap;
+    justify-content: center;
     -ms-scrollbar-track-color: transparent;
     .right-box {
       width: 100%;
       height: 100%;
       background-color: #f5f5f5;
       // padding: 10px;
+      width: 1170px;
     }
   }
   main::-webkit-scrollbar {
@@ -94,6 +105,11 @@ export default {
     // background: red;
     // height: 100px;
     margin: 0 auto;
+  }
+  footer{
+    width: 100%;
+    // height: calc(100%);
+    box-sizing: border-box;
   }
 }
 </style>

@@ -5,11 +5,17 @@ const routes = [
     path: "/",
     name: "IndexView",
     component: () => import("@/views/IndexView.vue"),
+    redirect: '/main',
     children: [
       {
         path: "/user",
         name: "UserLogin",
         component: () => import("@/views/user/UserLogin.vue"),
+      },
+      {
+        path: "/main",
+        name: "MainList",
+        component: () => import("@/views/main/MainList.vue"),
       },
     ],
   },

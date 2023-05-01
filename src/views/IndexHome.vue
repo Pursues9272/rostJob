@@ -2,7 +2,8 @@
   <div class="index-view">
     <SystemHeader></SystemHeader>
     <div class="index-main">
-      <SystemMain></SystemMain>
+      <!-- <SystemMain></SystemMain> -->
+      <MainList></MainList>
     </div>
     <SystemFooter></SystemFooter>
   </div>
@@ -12,13 +13,15 @@
 // @ is an alias to /src
 import SystemHeader from "@/components/SystemHeader.vue";
 import SystemFooter from "@/components/SystemFooter.vue";
-import SystemMain from "@/components/SystemMain.vue";
+// import SystemMain from "@/components/SystemMain.vue";
+import MainList from "@/views/main/MainList.vue";
 
 export default {
   component: {
     SystemFooter,
     SystemHeader,
-    SystemMain,
+    // SystemMain,
+    MainList,
   },
   data() {
     return {
