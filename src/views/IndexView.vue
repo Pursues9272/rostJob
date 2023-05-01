@@ -1,27 +1,33 @@
 <template>
   <div class="index-view">
-    <SystemHeader></SystemHeader>
-    <div class="index-main">
-      <SystemMain></SystemMain>
-    </div>
-    <SystemFooter></SystemFooter>
+    <header>
+      <SystemHeader></SystemHeader>
+    </header>
+    <main>
+      <div class="right-box">
+        <el-config-provider :locale="local">
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" :key="$route.path" />
+            </transition>
+          </router-view>
+        </el-config-provider>
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import SystemHeader from "@/components/SystemHeader.vue";
-import SystemFooter from "@/components/SystemFooter.vue";
-import SystemMain from "@/components/SystemMain.vue";
-
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
 export default {
-  component: {
-    SystemFooter,
+  components: {
     SystemHeader,
-    SystemMain,
   },
   data() {
     return {
+      local: zhCn,
       input: "组件库输入框",
     };
   },
@@ -58,10 +64,29 @@ export default {
 // 严格模式下必须存在内容
 .index-view {
   width: 100%;
-  
-  .ic-suppress {
-    font-size: 20px;
-    margin: 0 5px;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  header {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  main {
+    width: 100%;
+    height: calc(100%);
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    -ms-scrollbar-track-color: transparent;
+    .right-box {
+      width: 100%;
+      height: 100%;
+      background-color: #f5f5f5;
+      // padding: 10px;
+    }
+  }
+  main::-webkit-scrollbar {
+    display: none;
   }
   .index-main{
     width: 1170px;
