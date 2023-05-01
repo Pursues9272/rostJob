@@ -55,8 +55,8 @@ export default {
       console.log(this.$request);
       this.$request
         .post("/backend/backUser/list", httIt)
-        .then(({ data: list }) => {
-          console.log("list=>", list);
+        .then(res => {
+          console.log("list=>", res);
         })
         .catch((error) => {
           console.log("error=>", error);
