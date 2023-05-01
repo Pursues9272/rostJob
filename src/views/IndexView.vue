@@ -1,5 +1,6 @@
 <template>
   <div class="index-view">
+      <SystemHeader></SystemHeader>
     666
     <el-button type="primary" @click="clickOt($event)">点击</el-button>
 
@@ -29,6 +30,7 @@
 
 <script>
 // @ is an alias to /src
+import SystemHeader from "@/components/SystemHeader.vue";
 export default {
   data() {
     return {
@@ -36,7 +38,7 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    // this.init();
   },
   methods: {
     clickOt(event) {
