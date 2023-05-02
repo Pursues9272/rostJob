@@ -39,7 +39,7 @@
     </div>
     <div class="header-nav">
       <div class="nav-box">
-        <div v-for="(item, index) in navList" :key="index" class="nav-title">
+        <div v-for="(item, index) in navList" :key="index" class="nav-title" @click="userNav(item)">
           {{ item.title }}
         </div>
       </div>
@@ -115,6 +115,12 @@ export default {
         this.$router.push("/publish");
       }
     },
+    userNav(item){
+      console.log("nav--item=>", item);
+      if(item.title === "首页"){
+        this.$router.push("/");
+      }
+    }
   },
 };
 </script>

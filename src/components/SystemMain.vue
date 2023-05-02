@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" v-show="totalShow">
     <div class="Hlist">
         <div class="leftName">
           <!-- <i class="iconfont icon-filled"></i> -->
@@ -55,6 +55,7 @@ export default {
     return {
       listData:'',
       urlList:['/user/list','/article/getByArticleTypeList','/article/getByArticleTypeList'],
+      totalShow: true
     }
   },
   created() {
@@ -67,7 +68,6 @@ export default {
   },
   methods: {
     setImg(i){
-      console.log(i,this.typex);
       return require(`@/assets/img/${this.typex}-${i+1}.jpg`)
     },
     
@@ -92,15 +92,14 @@ export default {
       this.$request
       ({
         url: this.urlList[this.typex-1],
-        // method: this.typex == 1 ? "post" : "get",
         method: "post" ,
         data: data,
-        
       })
       .then(res => {
       if(res.status == 200)
       console.log(this.urlList[this.typex-1],"list=>", res.data.rows);
           this.listData = res.data.rows
+          this.totalShow = res.data.total
       })
       .catch((error) => {
         console.log("error=>", error);

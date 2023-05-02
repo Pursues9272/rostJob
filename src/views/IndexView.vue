@@ -74,7 +74,6 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   overflow: auto;
-  height: auto;
   
   header {
     width: 100%;
