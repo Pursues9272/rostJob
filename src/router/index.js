@@ -5,7 +5,7 @@ const routes = [
     path: "/",
     name: "IndexView",
     component: () => import("@/views/IndexView.vue"),
-    redirect: '/main',
+    redirect: "/main",
     children: [
       {
         path: "/user",
@@ -18,9 +18,19 @@ const routes = [
         component: () => import("@/views/main/MainList.vue"),
       },
       {
+        path: "/more",
+        name: "MoreList",
+        component: () => import("@/views/main/More.vue"),
+      },
+      {
         path: "/publish",
         name: "PublishPost",
         component: () => import("@/views/main/PublishPost.vue"),
+      },
+      {
+        path: "/details",
+        name: "ListDetails",
+        component: () => import("@/views/main/ListDetails.vue"),
       },
     ],
   },

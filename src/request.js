@@ -3,7 +3,7 @@ import router from "./router";
 import { ElMessage } from "element-plus";
 
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: process.env.VUE_APP_BASE_API,
 });
 
 instance.interceptors.response.use((res) => {

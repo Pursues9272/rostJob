@@ -6,83 +6,71 @@
       </div>
       <div class="box-main">
         <el-form
-            :model="footDatapur"
-            :rules="baseRules"
-            ref="ruleFormRef"
-            @keyup.enter="submitForm('ruleFormRef')"
-          >
-
+          :model="footDatapur"
+          :rules="baseRules"
+          ref="ruleFormRef"
+          @keyup.enter="submitForm('ruleFormRef')"
+        >
           <div class="main-title">
             <span>已有账户</span>
           </div>
 
           <el-form-item prop="username">
-              <el-input
-                v-model="footDatapur.username"
-                class="w-50 m-2 isInput"
-                placeholder="用户名/邮箱"
-                style="width: 380px"
-              >
-              </el-input>
-            </el-form-item>
+            <el-input
+              v-model="footDatapur.username"
+              class="w-50 m-2 isInput"
+              placeholder="用户名/邮箱"
+              style="width: 380px"
+            >
+            </el-input>
+          </el-form-item>
 
-            <el-form-item prop="password">
-              <el-input
-                type="password"
-                v-model="footDatapur.password"
-                class="w-50 m-2 isInput"
-                placeholder="密码"
-                show-password
-                style="width: 380px"
-              >
-              </el-input>
-            </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              type="password"
+              v-model="footDatapur.password"
+              class="w-50 m-2 isInput"
+              placeholder="密码"
+              show-password
+              style="width: 380px"
+            >
+            </el-input>
+          </el-form-item>
 
-            <el-form-item prop="password">
-              <el-input
-                type="password"
-                v-model="footDatapur.ident"
-                class="w-50 m-2 isInput"
-                placeholder="验证码"
-                show-password
-                style="width: 380px"
-              >
-              </el-input>
-            </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              type="password"
+              v-model="footDatapur.ident"
+              class="w-50 m-2 isInput"
+              placeholder="验证码"
+              show-password
+              style="width: 380px"
+            >
+            </el-input>
+          </el-form-item>
 
-            <el-form-item prop="password">
-              <el-input
-                type="password"
-                v-model="footDatapur.ident"
-                class="w-50 m-2 isInput"
-                placeholder="验证码"
-                show-password
-                style="width: 380px"
-              >
-              </el-input>
-            </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              type="password"
+              v-model="footDatapur.ident"
+              class="w-50 m-2 isInput"
+              placeholder="验证码"
+              show-password
+              style="width: 380px"
+            >
+            </el-input>
+          </el-form-item>
 
-            <el-form-item>
-              <el-button
-                class="login-button"
-                type="primary"
-                >登录</el-button
-              >
-              <el-button
-                class="login-button"
-                type="primary"
-                plain
-                >注册</el-button
-              >
-              <el-button
-                class="login-button"
-                type="primary"
-                plain
-                >忘记密码</el-button
-              >
-            </el-form-item>
-
-          </el-form>
+          <el-form-item>
+            <el-button class="login-button" type="primary">登录</el-button>
+            <el-button class="login-button" type="primary" plain
+              >注册</el-button
+            >
+            <el-button class="login-button" type="primary" plain
+              >忘记密码</el-button
+            >
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </div>
@@ -110,8 +98,7 @@ export default {
   },
   mounted() {},
   methods: {
-    submitForm(formEl) {
-    },
+    submitForm(formEl) {},
   },
 };
 </script>
@@ -154,34 +141,32 @@ export default {
       height: 480px;
       background: #914343;
       ::v-deep .el-form {
-          display: flex;
-          flex-flow: column nowrap;
-          align-items: center;
-          .el-form-item {
-            margin: 30px 0;
-            .isInput {
-              //     ::v-deep .el-form-item {
-              //       margin: 20px 0;
-              // }
-              .el-input__wrapper {
-                box-shadow: 0 0 0 0px
-                  var(--el-input-border-color, var(--el-border-color)) inset;
-                border-bottom: 1px solid #000;
-                border-radius: 0;
-                .el-icon {
-                  font-size: 20px;
-                  color: #000;
-                }
-                .ic-suppress-out {
-                  font-size: 22px;
-                  color: #000;
-                }
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        .el-form-item {
+          margin: 30px 0;
+          .isInput {
+            //     ::v-deep .el-form-item {
+            //       margin: 20px 0;
+            // }
+            .el-input__wrapper {
+              box-shadow: 0 0 0 0px
+                var(--el-input-border-color, var(--el-border-color)) inset;
+              border-bottom: 1px solid #000;
+              border-radius: 0;
+              .el-icon {
+                font-size: 20px;
+                color: #000;
+              }
+              .ic-suppress-out {
+                font-size: 22px;
+                color: #000;
               }
             }
-            
           }
         }
-        
+      }
     }
   }
 }

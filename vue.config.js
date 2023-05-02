@@ -13,8 +13,9 @@ module.exports = defineConfig({
     open: false, // 运行自启
     proxy: {
       "/api": {
-        target: "http://124.223.184.229:8080", // 内网
-        ws: false,
+        target: "http://124.223.184.229:8080", 
+        // target: "http://127.0.0.1/", 
+        ws: true,
         changOrigin: true,
         pathRewrite: {
           "^/api": "",

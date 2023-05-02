@@ -29,7 +29,7 @@ import SystemFooter from "@/components/SystemFooter.vue";
 export default {
   components: {
     SystemHeader,
-    SystemFooter
+    SystemFooter,
   },
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
       console.log(this.$request);
       this.$request
         .post("/backend/backUser/list", httIt)
-        .then(res => {
+        .then((res) => {
           console.log("list=>", res);
         })
         .catch((error) => {
@@ -74,14 +74,15 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   overflow: auto;
-  
+
   header {
     width: 100%;
     box-sizing: border-box;
   }
   main {
     width: 100%;
-    height: calc(100% - 90px);
+    min-height: 500px;
+    max-height: auto;
     box-sizing: border-box;
     display: flex;
     flex-flow: row nowrap;
@@ -99,14 +100,14 @@ export default {
   main::-webkit-scrollbar {
     display: none;
   }
-  .index-main{
+  .index-main {
     width: 1170px;
     height: auto;
     // background: red;
     // height: 100px;
     margin: 0 auto;
   }
-  footer{
+  footer {
     width: 100%;
     // height: calc(100%);
     box-sizing: border-box;

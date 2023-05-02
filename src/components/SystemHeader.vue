@@ -39,7 +39,12 @@
     </div>
     <div class="header-nav">
       <div class="nav-box">
-        <div v-for="(item, index) in navList" :key="index" class="nav-title" @click="userNav(item)">
+        <div
+          v-for="(item, index) in navList"
+          :key="index"
+          class="nav-title"
+          @click="userNav(item)"
+        >
           {{ item.title }}
         </div>
       </div>
@@ -111,16 +116,16 @@ export default {
       if (item.name === "登录") {
         this.$router.push("/user");
       }
-      if(item.name === "发布帖子") {
+      if (item.name === "发布帖子") {
         this.$router.push("/publish");
       }
     },
-    userNav(item){
+    userNav(item) {
       console.log("nav--item=>", item);
-      if(item.title === "首页"){
+      if (item.title === "首页") {
         this.$router.push("/");
       }
-    }
+    },
   },
 };
 </script>
