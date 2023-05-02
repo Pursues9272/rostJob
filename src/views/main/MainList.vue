@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SystemMain title="热门创作者" typex="1"></SystemMain>
+    <SystemMain title="热门创作者" typex="1" itemKey1="userPhone" itemKey2="userName"></SystemMain>
     <SystemMain title="热门制品" typex="2"></SystemMain>
     <SystemMain title="官方周边" typex="3"></SystemMain>
   </div>

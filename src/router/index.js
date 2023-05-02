@@ -17,17 +17,17 @@ const routes = [
         name: "MainList",
         component: () => import("@/views/main/MainList.vue"),
       },
+      {
+        path: "/publish",
+        name: "PublishPost",
+        component: () => import("@/views/main/PublishPost.vue"),
+      },
     ],
   },
   {
     path: "/home",
     name: "IndexHome",
     component: () => import("@/views/IndexHome.vue"),
-  },
-  {
-    path: "/a",
-    name: "a",
-    component: () => import("@/views/home/index.vue"),
   },
 ];
 

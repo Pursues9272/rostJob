@@ -74,6 +74,10 @@ export default {
       searchVul: "",
       userList: [
         {
+          name: "发布帖子",
+          id: 3,
+        },
+        {
           name: "登录",
           id: 0,
         },
@@ -106,6 +110,9 @@ export default {
       console.log("item=>", item);
       if (item.name === "登录") {
         this.$router.push("/user");
+      }
+      if(item.name === "发布帖子") {
+        this.$router.push("/publish");
       }
     },
   },

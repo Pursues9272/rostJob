@@ -13,18 +13,16 @@ module.exports = defineConfig({
     open: false, // 运行自启
     proxy: {
       "/api": {
-        // target: 'http://192.168.2.115:8888/',
-        // target: "http://111.229.237.240:8080/", // 内网
-        target: "http://192.168.0.102:8080/", // 内网
+        target: "http://124.223.184.229:8080", // 内网
+        ws: false,
         changOrigin: true,
         pathRewrite: {
-          "^/api": "/",
+          "^/api": "",
         },
-        ws: true,
-        cookieDomainRewrite: {
-          // localhost: '192.168.10.222:8080'
-          localhost: "192.168.0.102:8080",
-        },
+        // cookieDomainRewrite: {
+        //   // localhost: '192.168.10.222:8080'
+        //   localhost: "",
+        // },
       },
     },
   },

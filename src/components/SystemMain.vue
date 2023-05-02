@@ -7,7 +7,7 @@
         </div>
         <span class="rightName" @click="setMore()">更多</span>
     </div>
-    <div class="Mlist">
+    <div class="Mlist" :style="isMove?'flex-wrap: wrap;':''">
       <!-- <div class="listCard" v-for="(item,index) in listData" :key="index" > -->
         <div class="col-xs-2" v-for="(item,index) in listData" :key="index"  >
             <div class="card">
@@ -16,8 +16,8 @@
                 <img :src="setImg(index)" alt="">
                 <!-- <span @click="aaa(index)">{{ index }}</span> -->
                 <div class="card-heading">
-                  <span class="pull-right price">{{ item.userPhone }} </span>
-                  <span class="pull-left" style="color: #673AB7;">{{ item.userName }}</span>
+                  <span class="pull-right price">{{ item[itemKey1] }} </span>
+                  <span class="pull-left" style="color: #673AB7;">{{ item[itemKey2] }}</span>
                 </div>
             </div>
         </div>
@@ -36,17 +36,25 @@ export default {
     typex: {
       type: Number,
       default: 1
+    },
+    isMove: {
+      type: Boolean,
+      default: false
+    },
+    itemKey1:{
+      type: String,
+      default: 'userPhone'
+    },
+    itemKey2:{
+      type: String,
+      default: 'userName'
     }
-    
   },
   name: '',
   data () {
     return {
-        // listData:'',
-        listData:[
-          {userName:'老王1111111111111111111',userPhone:'17777450635'},{userName:'老王',userPhone:'17777450635'},{userName:'老王',userPhone:'17777450635'},{userName:'老王',userPhone:'17777450635'},{userName:'老王',userPhone:'17777450635'},{userName:'老王',userPhone:'17777450635'},
-        ]
-
+      listData:'',
+      urlList:['/user/list','/article/getByArticleTypeList','/article/getByArticleTypeList'],
     }
   },
   created() {
@@ -62,46 +70,41 @@ export default {
       console.log(i,this.typex);
       return require(`@/assets/img/${this.typex}-${i+1}.jpg`)
     },
+    
     login(){
-        // this.$request
-        // ({
-        //     method: "post",
-        //     url: "/backend/backUser/list",
-        //     data: {
-        //         context: "",
-        //         pageNum: 1,
-        //         pageSize: 6,
-        //         // userGender: "",
-        //         // userName: "",
-        //         // userPhone: "",
-        //         // userType: ""
-        //     }
-        // })
-        // .then(res => {
-        // //   console.log("list=>", res);
-        // if(res.status == 200)
-        // console.log("list=>", res.data.rows);
-
-        //     this.listData = res.data.rows
-        // })
-        // .catch((error) => {
-        //   console.log("error=>", error);
-        // });
-        
-        this.$request
-        .post("/backend/backUser/list", {
+      let data,method;
+      if(this.typex == 1){
+        // method = 'post'
+        data = {
           context: "",
           pageNum: 1,
           pageSize: 6,
-        })
-        .then(res => {
-        //   console.log("list=>", res);
-        // this.listData = res.data.rows
-        this.listData = res.data.rows
-        })
-        .catch((error) => {
-          console.log("error=>", error);
-        });
+        }
+      }else{
+        // method = 'get'
+        data={
+          articleType:this.typex==2?0:4,
+          pageNum: 1,
+          pageSize: 6,
+        }
+        
+      }
+      this.$request
+      ({
+        url: this.urlList[this.typex-1],
+        // method: this.typex == 1 ? "post" : "get",
+        method: "post" ,
+        data: data,
+        
+      })
+      .then(res => {
+      if(res.status == 200)
+      console.log(this.urlList[this.typex-1],"list=>", res.data.rows);
+          this.listData = res.data.rows
+      })
+      .catch((error) => {
+        console.log("error=>", error);
+      });
     },
     setMore(){
       this.$router.push("/MoreList")
@@ -139,15 +142,13 @@ export default {
   border: 1px solid #ddd;
   border-top: 0;
   border-left: 0;
-
-
   .listCard:hover {
     border: 1px solid #6633cc;
   }
     .col-xs-2 {
       border: 1px solid #e5e5e5;
       // margin: 5px;
-      width: 20%;
+      width: 19%;
       .card{
         padding: 10px;
         border-right: 0;
