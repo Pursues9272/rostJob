@@ -2,11 +2,14 @@
   <div>
     <SystemBox title="发帖">
       <el-form>
-        <div class="main-title">
-          已有账户
-        </div>
+        <div class="main-title">已有账户</div>
         <el-form-item prop="articleType">
-          <el-select v-model="articleList.articleType" class="m-2" placeholder="请选择发布类型" size="large">
+          <el-select
+            v-model="articleList.articleType"
+            class="m-2"
+            placeholder="请选择发布类型"
+            size="large"
+          >
             <el-option
               v-for="item in articleSelect"
               :key="item.value"
@@ -18,7 +21,8 @@
         <el-form-item prop="articleName">
           <el-input
             v-model="articleList.articleName"
-            class="w-50 m-2 isInput" size="large"
+            class="w-50 m-2 isInput"
+            size="large"
             placeholder="请输入作品名称"
             style="width: 380px"
           >
@@ -27,14 +31,20 @@
         <el-form-item prop="articlePrice">
           <el-input
             v-model="articleList.articlePrice"
-            class="w-50 m-2 isInput" size="large"
+            class="w-50 m-2 isInput"
+            size="large"
             placeholder="请输入作品价格"
             style="width: 380px"
           >
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="articleList.articleIntroduction" size="large" placeholder="请输入作品简介" type="textarea" />
+          <el-input
+            v-model="articleList.articleIntroduction"
+            size="large"
+            placeholder="请输入作品简介"
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item>
           <el-upload
@@ -60,22 +70,21 @@ export default {
   components: { SystemBox },
   data() {
     return {
-      imageUrl:"",
+      imageUrl: "",
       articleList: {
-        articleName: "",//物品名称*
-        articleIntroduction: "",//物品简介*
-        articleType: '',//物品类型* 0制品1绘画2文字3约稿4官方周边
-        articleCover: "",//物品封面*
-        articlePrice: "",//物品价格*
-        articleDetails: "",//物品详情
-
+        articleName: "", //物品名称*
+        articleIntroduction: "", //物品简介*
+        articleType: "", //物品类型* 0制品1绘画2文字3约稿4官方周边
+        articleCover: "", //物品封面*
+        articlePrice: "", //物品价格*
+        articleDetails: "", //物品详情
       },
-      articleSelect:[
-        { value: '0', label: '制品1' },
-        { value: '1', label: '绘画1' },
-        { value: '2', label: '文字1' },
-        { value: '3', label: '约稿1' },
-        { value: '4', label: '官方周边1' },
+      articleSelect: [
+        { value: "0", label: "制品1" },
+        { value: "1", label: "绘画1" },
+        { value: "2", label: "文字1" },
+        { value: "3", label: "约稿1" },
+        { value: "4", label: "官方周边1" },
       ],
       baseRules: {
         username: [
@@ -88,8 +97,8 @@ export default {
   },
   mounted() {},
   methods: {
-    requestFile(e){
-      console.log("123456",e);
+    requestFile(e) {
+      console.log("123456", e);
     },
   },
 };
@@ -97,9 +106,9 @@ export default {
 
 <style lang="less" scoped>
 // 严格模式下必须存在内容
-::v-deep .el-form{
+::v-deep .el-form {
   margin: 30px 0;
-  .main-title{
+  .main-title {
     width: 100%;
     text-align: left;
     border-bottom: 1px solid #dddddd;

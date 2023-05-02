@@ -72,7 +72,7 @@ export default {
         // align-items: center;
         .el-form-item {
           margin-bottom: 30px;
-          --el-input-focus: #9C27B0;
+          --el-input-focus: #9c27b0;
           .isInput {
             .el-input__wrapper {
               border: 1px solid #ccc;
@@ -85,28 +85,25 @@ export default {
                 font-size: 22px;
                 color: #000;
               }
-              
             }
-            .is-focus{
-              box-shadow:  0 0 3px
-              var(--el-input-focus);
+            .is-focus {
+              box-shadow: 0 0 3px var(--el-input-focus);
               border: 1px solid var(--el-input-focus);
             }
           }
-          .el-textarea__inner{
-            // 
-            box-shadow:  0 0 3px
-            #ccc;
+          .el-textarea__inner {
+            //
+            box-shadow: 0 0 3px #ccc;
             border: 1px solid #ccc;
-            &:focus{
-              box-shadow:  0 0 3px var(--el-input-focus);
+            &:focus {
+              box-shadow: 0 0 3px var(--el-input-focus);
               border: 1px solid var(--el-input-focus);
             }
           }
-          .el-select .el-input.is-focus{
-            border: 1px solid var(--el-input-focus) inset!important;
+          .el-select .el-input.is-focus {
+            border: 1px solid var(--el-input-focus) inset !important;
             .el-input__wrapper {
-              box-shadow: 0 0 0 1px var(--el-input-focus) inset!important;
+              box-shadow: 0 0 0 1px var(--el-input-focus) inset !important;
             }
           }
         }
