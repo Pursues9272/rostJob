@@ -1,13 +1,18 @@
 <template>
   <div class="list" v-show="totalShow">
     <div class="Hlist" v-show="title">
-      <div class="leftName" >
+      <div class="leftName">
         {{ title }}
       </div>
       <span class="rightName" @click="setMore()">更多</span>
     </div>
     <div class="Mlist" :style="isMove ? 'flex-wrap: wrap;' : ''">
-      <div class="col-xs-2" v-for="(item, index) in listData" :key="index" :style="isMove ? 'margin: 0.4%;' : ''" >
+      <div
+        class="col-xs-2"
+        v-for="(item, index) in listData"
+        :key="index"
+        :style="isMove ? 'margin: 0.4%;' : ''"
+      >
         <div class="card" @click="setDetails(item)">
           <img :src="setImg(index)" alt="" />
           <div class="card-heading">
@@ -108,10 +113,10 @@ export default {
           console.log("error=>", error);
         });
     },
-    setDetails(item){
+    setDetails(item) {
       let urlid;
-      if(this.typex==1) urlid = item.userPhone;
-      this.$router.push("/details?id="+urlid)
+      if (this.typex == 1) urlid = item.userPhone;
+      this.$router.push("/details?id=" + urlid);
     },
     setMore() {
       this.$router.push("/more?name="+this.title);

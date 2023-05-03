@@ -2,11 +2,14 @@
   <div>
     <SystemBox title="发帖">
       <el-form>
-        <div class="main-title">
-          已有账户
-        </div>
+        <div class="main-title">已有账户</div>
         <el-form-item prop="articleType">
-          <el-select v-model="articleList.articleType" class="m-2" placeholder="请选择发布类型" size="large">
+          <el-select
+            v-model="articleList.articleType"
+            class="m-2"
+            placeholder="请选择发布类型"
+            size="large"
+          >
             <el-option
               v-for="item in articleSelect"
               :key="item.value"
@@ -18,7 +21,8 @@
         <el-form-item prop="articleName">
           <el-input
             v-model="articleList.articleName"
-            class="w-50 m-2 isInput" size="large"
+            class="w-50 m-2 isInput"
+            size="large"
             placeholder="请输入作品名称"
             style="width: 380px"
           >
@@ -36,7 +40,8 @@
         <el-form-item prop="articlePrice">
           <el-input
             v-model="articleList.articlePrice"
-            class="w-50 m-2 isInput" size="large"
+            class="w-50 m-2 isInput"
+            size="large"
             placeholder="请输入作品价格"
             style="width: 380px"
           >
@@ -52,7 +57,12 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="articleList.articleIntroduction" size="large" placeholder="请输入作品简介" type="textarea" />
+          <el-input
+            v-model="articleList.articleIntroduction"
+            size="large"
+            placeholder="请输入作品简介"
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item>
           <el-upload
@@ -166,9 +176,9 @@ export default {
 
 <style lang="less" scoped>
 // 严格模式下必须存在内容
-::v-deep .el-form{
+::v-deep .el-form {
   margin: 30px 0;
-  .main-title{
+  .main-title {
     width: 100%;
     text-align: left;
     border-bottom: 1px solid #dddddd;

@@ -12,14 +12,14 @@
           @keyup.enter="submitForm('ruleFormRef')"
         >
           <div class="main-title">
-            <span>已有账户</span>
+            <span>已有账号</span>
           </div>
 
           <el-form-item prop="username">
             <el-input
               v-model="footDatapur.username"
               class="w-50 m-2 isInput"
-              placeholder="用户名/邮箱"
+              placeholder="请输入手机号"
               style="width: 380px"
             >
             </el-input>
@@ -30,43 +30,40 @@
               type="password"
               v-model="footDatapur.password"
               class="w-50 m-2 isInput"
-              placeholder="密码"
+              placeholder="请输入密码"
               show-password
               style="width: 380px"
             >
             </el-input>
           </el-form-item>
 
-          <el-form-item prop="password">
+          <el-form-item prop="ident">
             <el-input
-              type="password"
               v-model="footDatapur.ident"
               class="w-50 m-2 isInput"
               placeholder="验证码"
-              show-password
-              style="width: 380px"
+              style="width: 240px"
             >
             </el-input>
-          </el-form-item>
-
-          <el-form-item prop="password">
-            <el-input
-              type="password"
-              v-model="footDatapur.ident"
-              class="w-50 m-2 isInput"
-              placeholder="验证码"
-              show-password
-              style="width: 380px"
-            >
-            </el-input>
+            <img src="../../assets/user/test.png" alt="" />
           </el-form-item>
 
           <el-form-item>
-            <el-button class="login-button" type="primary">登录</el-button>
-            <el-button class="login-button" type="primary" plain
+            <el-button
+              class="login-button"
+              type="primary"
+              @click="submitForm('ruleFormRef'), clickOt($event)"
+              >登录</el-button
+            >
+            <el-button
+              class="login-button"
+              type="primary"
+              plain
+              text
+              @click="subRegis(), clickOt($event)"
               >注册</el-button
             >
-            <el-button class="login-button" type="primary" plain
+            <el-button class="login-button" type="primary" plain text
               >忘记密码</el-button
             >
           </el-form-item>
@@ -98,7 +95,64 @@ export default {
   },
   mounted() {},
   methods: {
-    submitForm(formEl) {},
+    clickOt(event) {
+      this.$func.unFons(event);
+    },
+    submitForm(formEl) {
+      console.log("formEl", formEl);
+      this.$refs[formEl].validate((valid) => {
+        console.log("valid", valid);
+        if (valid) {
+          if (this.footDatapur.ident == "M8k2") {
+            let purDat = {
+              userPhone: this.footDatapur.username, // 手机号
+              userPassword: this.footDatapur.password, // 密码
+            };
+            console.log("登录成功2", purDat);
+            this.$request({
+              url: "/user/login",
+              method: "post",
+              data: purDat,
+            })
+              .then(({ data: list }) => {
+                console.log("登录成功", list);
+                if (list.code === 200) {
+                  let miscellaneous = list.data;
+                  window.localStorage.setItem(
+                    "miscellaneous",
+                    JSON.stringify(miscellaneous)
+                  );
+                  ElMessage({
+                    type: "success",
+                    message: list.msg,
+                  });
+                  this.$router.push("/user");
+                } else {
+                  ElMessage({
+                    type: "warning",
+                    message: list.msg,
+                  });
+                }
+              })
+              .catch((error) => {
+                ElMessage({
+                  type: "error",
+                  message: error,
+                });
+              });
+          } else {
+            ElMessage({
+              type: "error",
+              message: "验证码输入错误",
+            });
+          }
+        }
+      });
+    },
+    subRegis() {
+      // 注册
+      this.$router.push("/regis");
+    },
   },
 };
 </script>
@@ -124,7 +178,6 @@ export default {
     .box-top {
       width: 100%;
       height: 50px;
-      background: #f1f1f1;
       box-sizing: border-box;
       display: flex;
       flex-flow: row nowrap;
@@ -139,32 +192,36 @@ export default {
     .box-main {
       width: 100%;
       height: 480px;
-      background: #914343;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       ::v-deep .el-form {
         display: flex;
         flex-flow: column nowrap;
-        align-items: center;
+        // align-items: center;
         .el-form-item {
-          margin: 30px 0;
-          .isInput {
-            //     ::v-deep .el-form-item {
-            //       margin: 20px 0;
-            // }
-            .el-input__wrapper {
-              box-shadow: 0 0 0 0px
-                var(--el-input-border-color, var(--el-border-color)) inset;
-              border-bottom: 1px solid #000;
-              border-radius: 0;
-              .el-icon {
-                font-size: 20px;
-                color: #000;
-              }
-              .ic-suppress-out {
-                font-size: 22px;
-                color: #000;
-              }
-            }
+          margin-bottom: 20px;
+          display: flex;
+          flex-flow: row nowrap;
+          img {
+            width: 140px;
+            height: 32px;
           }
+        }
+        .main-title {
+          widows: 100%;
+          height: 35px;
+          // background: blue;
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          justify-content: flex-start;
+          font-size: 13px;
+          font-weight: bold;
+          box-sizing: border-box;
+          border-bottom: 1px solid rgba(153, 153, 153, 0.5);
+          margin-bottom: 20px;
         }
       }
     }

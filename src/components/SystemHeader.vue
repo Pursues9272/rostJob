@@ -91,25 +91,23 @@ export default {
           id: 1,
         },
       ],
+      isName: false,
     };
   },
-  mounted() {},
+  mounted() {
+    this.init();
+  },
   methods: {
-    async init() {
-      console.log(666);
-      this.$request({
-        url: "/user/list",
-        method: "post",
-        data: {
-          pageNum: 1,
-          pageSize: 20,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((data) => {
-        console.log("list=>", data);
-      });
+    init() {
+      let miscellaneous = JSON.parse(
+        window.localStorage.getItem("miscellaneous")
+      );
+      console.log("miscellaneous=>", miscellaneous);
+      if (miscellaneous !== null) {
+        this.isName = true;
+      } else {
+        this.isName = false;
+      }
     },
     userCu(item) {
       console.log("item=>", item);

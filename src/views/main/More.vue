@@ -3,7 +3,10 @@
     <SystemMain
       typex="1"
       itemKey1="userPhone"
-      itemKey2="userName" :pageSize="pageList.pageSize" :pageNum ="pageList.pageNum" isMove="true"
+      itemKey2="userName"
+      :pageSize="pageList.pageSize"
+      :pageNum="pageList.pageNum"
+      isMove="true"
     ></SystemMain>
   </div>
 </template>
@@ -19,18 +22,16 @@ export default {
     return {
       pageList: {
         pageNum: 1,
-        pageSize: 10
-      }
+        pageSize: 10,
+      },
     };
   },
-  mounted(){
-    this.details()
+  mounted() {
+    this.details();
   },
-  methods:{
-    details(){
-      
-    }
-  }
+  methods: {
+    details() {},
+  },
 };
 </script>
 
