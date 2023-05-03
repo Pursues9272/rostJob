@@ -10,6 +10,7 @@ import * as ElIconModules from "@element-plus/icons-vue";
 import { throttle, focus } from "./components/global_cont/instructions";
 import * as func from "./components/global_cont/func";
 import request from "./request";
+import VueSplide from "@splidejs/vue-splide";
 
 axios.defaults.baseURL = "/api";
 
@@ -20,6 +21,7 @@ app.config.globalProperties.$func = func;
 app.config.globalProperties.$request = request;
 app.use(store);
 app.use(router);
+app.use(VueSplide);
 app.use(VueAxios, axios);
 for (let iconName in ElIconModules) {
   app.component(iconName, ElIconModules[iconName]);
