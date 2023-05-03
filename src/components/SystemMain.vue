@@ -95,8 +95,12 @@ export default {
       return this.typex==1?'约稿':this.typex==2?'制品':'官方周边';
     },
     setImg(i) {
+<<<<<<< HEAD
       return require(`@/assets/img/${this.typex}-${i%7 + 1}.jpg`);
 
+=======
+      return require(`@/assets/img/${this.typex}-${(i % 7) + 1}.jpg`);
+>>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
     },
 
     login() {
@@ -147,8 +151,12 @@ export default {
       
     },
     setMore() {
+<<<<<<< HEAD
       // let title = this.typex==1?"约稿":this.typex==2?"制品":"官方周边";
       this.$router.push("/more?type="+this.typex);
+=======
+      this.$router.push("/more?name=" + this.title);
+>>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
     },
   },
 };

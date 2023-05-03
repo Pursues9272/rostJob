@@ -3,6 +3,9 @@
     <header>
       <SystemHeader></SystemHeader>
     </header>
+    <nav v-if="$route.path !== '/user' && $route.path !== '/regis'">
+      <SystemNav></SystemNav>
+    </nav>
     <main>
       <div class="right-box">
         <el-config-provider :locale="local">
@@ -25,6 +28,7 @@
 <script>
 // @ is an alias to /src
 import SystemHeader from "@/components/SystemHeader.vue";
+import SystemNav from "@/components/SystemNav.vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import SystemFooter from "@/components/SystemFooter.vue";
 
@@ -32,6 +36,7 @@ export default {
   components: {
     SystemHeader,
     SystemFooter,
+    SystemNav,
   },
   data() {
     return {
@@ -40,6 +45,7 @@ export default {
     };
   },
   mounted() {
+    console.log("妈妈咪呀", this.$route.path);
     // this.init();
   },
   methods: {
@@ -101,6 +107,9 @@ export default {
   }
   main::-webkit-scrollbar {
     display: none;
+  }
+  nav {
+    padding: 10px 0;
   }
   .index-main {
     width: 1170px;

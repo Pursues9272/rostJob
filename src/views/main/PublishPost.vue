@@ -28,10 +28,16 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item prop="articleCount" v-show="articleList.articleType==='0'||articleList.articleType==4">
+        <el-form-item
+          prop="articleCount"
+          v-show="
+            articleList.articleType === '0' || articleList.articleType == 4
+          "
+        >
           <el-input
             v-model="articleList.articleCount"
-            class="w-50 m-2 isInput" size="large"
+            class="w-50 m-2 isInput"
+            size="large"
             placeholder="请输入作品库存"
             style="width: 380px"
           >
@@ -50,7 +56,8 @@
         <el-form-item prop="articleDiscount">
           <el-input
             v-model="articleList.articleDiscount"
-            class="w-50 m-2 isInput" size="large"
+            class="w-50 m-2 isInput"
+            size="large"
             placeholder="请输入作品特价"
             style="width: 380px"
           >
@@ -71,14 +78,29 @@
             :show-file-list="false"
             :http-request="requestFile"
           >
-            <img v-if="articleList.articleCover" :src="articleList.articleCover" class="avatar" />
-            <el-icon v-if="!articleList.articleCover" class="avatar-uploader-icon"><Plus /></el-icon>
+            <img
+              v-if="articleList.articleCover"
+              :src="articleList.articleCover"
+              class="avatar"
+            />
+            <el-icon
+              v-if="!articleList.articleCover"
+              class="avatar-uploader-icon"
+              ><Plus
+            /></el-icon>
             <!-- <el-icon><zoom-in /></el-icon> -->
           </el-upload>
         </el-form-item>
         <el-form-item>
+<<<<<<< HEAD
           <el-button size="large" type="primary" @click="setWaning()">完成</el-button>
           <el-button size="large" @click="reset">重置</el-button>
+=======
+          <el-button size="large" type="primary" @click="setWaning()"
+            >完成</el-button
+          >
+          <el-button size="large">重置</el-button>
+>>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
         </el-form-item>
       </el-form>
     </SystemBox>
@@ -93,24 +115,26 @@ export default {
   components: { SystemBox },
   data() {
     return {
+<<<<<<< HEAD
       articleListCope:"",
+=======
+>>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
       articleList: {
-        articleName: "",//物品名称*
-        articleIntroduction: "",//物品简介*
-        articleType: '',//物品类型* 0制品1绘画2文字3约稿4官方周边
-        articleCover: "",//物品封面*
-        articlePrice: "",//物品价格*
-        articleDiscount: "",//物品特价*
-        articleDetails: "",//物品详情
-        articleCount:"",//物品库存
-
+        articleName: "", //物品名称*
+        articleIntroduction: "", //物品简介*
+        articleType: "", //物品类型* 0制品1绘画2文字3约稿4官方周边
+        articleCover: "", //物品封面*
+        articlePrice: "", //物品价格*
+        articleDiscount: "", //物品特价*
+        articleDetails: "", //物品详情
+        articleCount: "", //物品库存
       },
-      articleSelect:[
-        { value: '0', label: '制品' },
-        { value: '1', label: '绘画' },
-        { value: '2', label: '文字' },
-        { value: '3', label: '约稿' },
-        { value: '4', label: '官方周边' },
+      articleSelect: [
+        { value: "0", label: "制品" },
+        { value: "1", label: "绘画" },
+        { value: "2", label: "文字" },
+        { value: "3", label: "约稿" },
+        { value: "4", label: "官方周边" },
       ],
       baseRules: {
         username: [
@@ -125,6 +149,7 @@ export default {
     this.articleListCope = JSON.parse(JSON.stringify(this.articleList));
   },
   methods: {
+<<<<<<< HEAD
     copeArticle(){
       return JSON.parse(JSON.stringify(this.articleListCope));
     },
@@ -150,26 +175,45 @@ export default {
         }
       }).catch(err=>{
         ElMessage.error("物品上传失败");
-      })
-    },
-    replace(data){
-      const search = /data/g
-      const replace = 'img'
-      const result = data.replace(search, replace)
-      return result;
-
-    },
-    requestFile(e){
-      console.log("123456",e.file);
-      let str = 'http://124.223.184.229:8080';
-      let formData = new FormData()
-      formData.append('file', e.file)
-      formData.append('module', 1)
+=======
+    setWaning() {
+      console.log(this.articleList);
       this.$request({
-        method:"post",
-        url:"/comm/upload/file",
-        data:formData,
+        method: "post",
+        url: "/article/add",
+        data: this.articleList,
+>>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
+      })
+        .then(({ data }) => {
+          console.log(data);
+          if (data.code) {
+            ElMessage.success(data.msg);
+          } else {
+            ElMessage.success(data.msg);
+          }
+        })
+        .catch((err) => {
+          ElMessage.error("物品上传失败");
+        });
+    },
+    replace(data) {
+      const search = /data/g;
+      const replace = "img";
+      const result = data.replace(search, replace);
+      return result;
+    },
+    requestFile(e) {
+      console.log("123456", e.file);
+      let str = "http://124.223.184.229:8080";
+      let formData = new FormData();
+      formData.append("file", e.file);
+      formData.append("module", 1);
+      this.$request({
+        method: "post",
+        url: "/comm/upload/file",
+        data: formData,
         headers: {
+<<<<<<< HEAD
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then(res=>{
@@ -178,8 +222,20 @@ export default {
         ElMessage.success(res.data.msg);
       }).catch(err=>{
         ElMessage.error("文件过大");
+=======
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+>>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
       })
-
+        .then((res) => {
+          // console.log(res,res.data.data.absolutePath);
+          this.articleList.articleCover =
+            str + this.replace(res.data.data.absolutePath);
+          ElMessage.success(res.data.msg);
+        })
+        .catch((err) => {
+          ElMessage.error("文件过大");
+        });
     },
   },
 };
@@ -200,7 +256,6 @@ export default {
   .avatar-uploader .avatar {
     display: block;
     width: 150px;
-    
   }
   .avatar-uploader .el-upload {
     border: 1px dashed var(--el-border-color);
