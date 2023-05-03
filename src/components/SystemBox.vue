@@ -109,6 +109,14 @@ export default {
               box-shadow: 0 0 0 1px var(--el-input-focus) inset!important;
             }
           }
+
+          .avatar-uploader .el-upload:hover {
+            border-color: var(--el-input-focus);
+          }
+          .el-button--primary {
+            border-color: var(--el-input-focus);
+            background-color: var(--el-input-focus);
+          }
         }
       }
     }
