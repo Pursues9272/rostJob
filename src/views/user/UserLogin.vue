@@ -108,7 +108,6 @@ export default {
               userPhone: this.footDatapur.username, // 手机号
               userPassword: this.footDatapur.password, // 密码
             };
-            console.log("登录成功2", purDat);
             this.$request({
               url: "/user/login",
               method: "post",

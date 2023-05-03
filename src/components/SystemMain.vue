@@ -78,7 +78,7 @@ export default {
   computed: {},
   methods: {
     setImg(i) {
-      return require(`@/assets/img/${this.typex}-${i%7 + 1}.jpg`);
+      return require(`@/assets/img/${this.typex}-${(i % 7) + 1}.jpg`);
     },
 
     login() {
@@ -119,7 +119,7 @@ export default {
       this.$router.push("/details?id=" + urlid);
     },
     setMore() {
-      this.$router.push("/more?name="+this.title);
+      this.$router.push("/more?name=" + this.title);
     },
   },
 };

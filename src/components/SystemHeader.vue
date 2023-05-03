@@ -5,11 +5,36 @@
       <div class="noseCone-right">
         <div
           class="nose-text"
-          v-for="(item, index) in userList"
+          v-show="!isName"
+          v-for="(item, index) in userListJob"
           :key="index"
           @click="userCu(item)"
         >
           {{ item.name }}
+        </div>
+        <div
+          class="nose-text"
+          v-show="isName"
+          v-for="(item, index) in userList"
+          :key="index"
+          @click="userCu(item)"
+        >
+          <div v-if="item.id !== 0" class="test-cent">
+            {{ item.name }}
+          </div>
+          <el-dropdown trigger="click" v-if="item.id === 0">
+            <div class="test-cent">
+              <img :src="item.img" alt="" />{{ item.name }}
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>用户名:{{ item.name }}</el-dropdown-item>
+                <el-dropdown-item @click="ststemSignout()"
+                  >退出</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </div>
     </div>
@@ -77,7 +102,7 @@ export default {
         },
       ],
       searchVul: "",
-      userList: [
+      userListJob: [
         {
           name: "发布帖子",
           id: 3,
@@ -91,11 +116,28 @@ export default {
           id: 1,
         },
       ],
+      userList: [
+        {
+          name: "发布帖子",
+          id: 3,
+        },
+        {
+          name: "登录",
+          id: 0,
+          img: require("../assets/user/heads.png"),
+        },
+      ],
       isName: false,
     };
   },
-  mounted() {
+  created() {
     this.init();
+  },
+  mounted() {},
+  watch: {
+    $route() {
+      this.init();
+    },
   },
   methods: {
     init() {
@@ -104,6 +146,7 @@ export default {
       );
       console.log("miscellaneous=>", miscellaneous);
       if (miscellaneous !== null) {
+        this.userList[1].name = miscellaneous.userName;
         this.isName = true;
       } else {
         this.isName = false;
@@ -113,8 +156,9 @@ export default {
       console.log("item=>", item);
       if (item.name === "登录") {
         this.$router.push("/user");
-      }
-      if (item.name === "发布帖子") {
+      } else if (item.name === "注册") {
+        this.$router.push("/regis");
+      } else if (item.name === "发布帖子") {
         this.$router.push("/publish");
       }
     },
@@ -123,6 +167,11 @@ export default {
       if (item.title === "首页") {
         this.$router.push("/");
       }
+    },
+    ststemSignout() {
+      // 退出系统
+      window.localStorage.removeItem("miscellaneous");
+      this.$router.push("/user");
     },
   },
 };
@@ -154,7 +203,7 @@ export default {
       align-items: center;
     }
     .noseCone-right {
-      width: 400px;
+      // width: 400px;
       height: 100%;
       display: flex;
       flex-flow: row nowrap;
@@ -169,6 +218,19 @@ export default {
         color: #ff9933;
         text-decoration: none;
         cursor: pointer;
+        .test-cent {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          justify-content: space-between;
+          img {
+            width: 30px;
+            height: 30px;
+            box-sizing: border-box;
+            border-radius: 100%;
+            margin-right: 5px;
+          }
+        }
       }
     }
   }
