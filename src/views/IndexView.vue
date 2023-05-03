@@ -17,7 +17,9 @@
     <footer>
       <SystemFooter></SystemFooter>
     </footer>
+    <el-backtop v-if="$route.path='/details'" :visibility-height="100" :right="100" :bottom="100" target=".index-view" />
   </div>
+  
 </template>
 
 <script>

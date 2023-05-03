@@ -8,18 +8,29 @@
     </div>
     <div class="Mlist" :style="isMove ? 'flex-wrap: wrap;' : ''">
       <div
-        class="col-xs-2"
+        class="col-xs-2" 
         v-for="(item, index) in listData"
         :key="index"
-        :style="isMove ? 'margin: 0.4%;' : ''"
+        :style="isMove ? 'margin: 0.4%;' : 'width:16.4%;margin:0 0.1%'"
       >
         <div class="card" @click="setDetails(item)">
-          <img :src="setImg(index)" alt="" />
+          <!--  -->
+          <!-- <img :src="setImg(index)" alt="" /> -->
+          <div class="imgbox">
+            <img :src="item.articleCover" alt="" />
+          </div>
           <div class="card-heading">
-            <span class="pull-right price">{{ item[itemKey1] }} </span>
-            <span class="pull-left" style="color: #673ab7">{{
-              item[itemKey2]
-            }}</span>
+            <span class="pull-right price">￥{{ item[itemKey1] }} </span>
+            <span class="pull-left" style="color: #673ab7">
+              <span v-show="item.articleType==1||item.articleType==2"> 【约稿/{{ typeList[item.articleType] }}】 </span>
+              <span v-show="item.articleType!=1&&item.articleType!=2">
+                【 
+                {{ typeList[item.articleType] }}
+                <!-- {{setText}}   -->
+                <!-- {{ item.articleType==1||item.articleType==2?typeList[item.articleType]:'' }}  -->
+                】
+              </span>
+              {{ item[itemKey2] }}</span>
           </div>
         </div>
       </div>
@@ -68,6 +79,8 @@ export default {
         "/article/getByArticleTypeList",
         "/article/getByArticleTypeList",
       ],
+      // 0:制品|1:绘画|2:文字|3:约稿|4:官方周边
+      typeList:{0:'制品', 1:"绘画",2:"文字",3:'约稿',4:'周边' },
       totalShow: true,
     };
   },
@@ -77,16 +90,23 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+    setText(){
+      console.log(this.typex==1?'约稿':this.typex==2?'制品':'官方周边');
+      return this.typex==1?'约稿':this.typex==2?'制品':'官方周边';
+    },
     setImg(i) {
       return require(`@/assets/img/${this.typex}-${i%7 + 1}.jpg`);
+
     },
 
     login() {
+      console.log(this.typex);
       let data, method;
       if (this.typex == 1) {
         // method = 'post'
         data = {
-          context: "",
+          // context: "",
+          articleType:3,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
         };
@@ -99,7 +119,7 @@ export default {
         };
       }
       this.$request({
-        url: this.urlList[this.typex - 1],
+        url: "/article/getByArticleTypeList",
         method: "post",
         data: data,
       })
@@ -114,12 +134,21 @@ export default {
         });
     },
     setDetails(item) {
-      let urlid;
-      if (this.typex == 1) urlid = item.userPhone;
-      this.$router.push("/details?id=" + urlid);
+      let urlid = item.id;
+      // if (this.typex == 1) urlid = item.id;
+      // this.$router.push("/details?id=" + urlid);
+      this.$router.push({
+        path: '/details', 
+        query: {
+          id: urlid,
+          type: this.typex
+        }
+      });
+      
     },
     setMore() {
-      this.$router.push("/more?name="+this.title);
+      // let title = this.typex==1?"约稿":this.typex==2?"制品":"官方周边";
+      this.$router.push("/more?type="+this.typex);
     },
   },
 };
@@ -165,6 +194,9 @@ export default {
       border-right: 0;
       border-bottom: 0;
       border-radius: 0;
+      .imgbox{
+        height: 200px;
+      }
       .card-heading {
         padding: 10px;
         margin: 0;

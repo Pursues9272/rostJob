@@ -119,9 +119,15 @@ export default {
       }
     },
     userNav(item) {
-      console.log("nav--item=>", item);
+      // console.log("nav--item=>", item);
       if (item.title === "首页") {
         this.$router.push("/");
+      }else if (item.title === "约稿") {
+        this.$router.push("/more?type=1");
+      }else if (item.title === "制品") {
+        this.$router.push("/more?type=2");
+      }else if (item.title === "约稿") {
+        this.$router.push("/more?type=3");
       }
     },
   },

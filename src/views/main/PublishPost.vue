@@ -56,9 +56,9 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="articleDetails">
           <el-input
-            v-model="articleList.articleIntroduction"
+            v-model="articleList.articleDetails"
             size="large"
             placeholder="请输入作品简介"
             type="textarea"
@@ -78,7 +78,7 @@
         </el-form-item>
         <el-form-item>
           <el-button size="large" type="primary" @click="setWaning()">完成</el-button>
-          <el-button size="large">重置</el-button>
+          <el-button size="large" @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </SystemBox>
@@ -93,7 +93,7 @@ export default {
   components: { SystemBox },
   data() {
     return {
-      
+      articleListCope:"",
       articleList: {
         articleName: "",//物品名称*
         articleIntroduction: "",//物品简介*
@@ -121,11 +121,22 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    this.articleListCope = JSON.parse(JSON.stringify(this.articleList));
+  },
   methods: {
-    setWaning(){
-      console.log(this.articleList);
-      this.$request({
+    copeArticle(){
+      return JSON.parse(JSON.stringify(this.articleListCope));
+    },
+    reset(){
+      this.articleList=this.copeArticle();
+    },
+    async setWaning(){
+      await this.$request({
+        method:"get",
+        url:"/user/getLogin/18888488869",
+      })
+      await this.$request({
         method:"post",
         url:"/article/add",
         data:this.articleList,
@@ -133,10 +144,10 @@ export default {
         console.log(data);
         if(data.code){
           ElMessage.success(data.msg);
+          this.reset();
         }else{
           ElMessage.success(data.msg);
         }
-        
       }).catch(err=>{
         ElMessage.error("物品上传失败");
       })
@@ -162,7 +173,7 @@ export default {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then(res=>{
-        // console.log(res,res.data.data.absolutePath);
+        console.log(res,res.data.data.absolutePath);
         this.articleList.articleCover = str + this.replace(res.data.data.absolutePath);
         ElMessage.success(res.data.msg);
       }).catch(err=>{
