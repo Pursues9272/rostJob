@@ -92,15 +92,8 @@
           </el-upload>
         </el-form-item>
         <el-form-item>
-<<<<<<< HEAD
           <el-button size="large" type="primary" @click="setWaning()">完成</el-button>
           <el-button size="large" @click="reset">重置</el-button>
-=======
-          <el-button size="large" type="primary" @click="setWaning()"
-            >完成</el-button
-          >
-          <el-button size="large">重置</el-button>
->>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
         </el-form-item>
       </el-form>
     </SystemBox>
@@ -115,10 +108,7 @@ export default {
   components: { SystemBox },
   data() {
     return {
-<<<<<<< HEAD
       articleListCope:"",
-=======
->>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
       articleList: {
         articleName: "", //物品名称*
         articleIntroduction: "", //物品简介*
@@ -149,7 +139,6 @@ export default {
     this.articleListCope = JSON.parse(JSON.stringify(this.articleList));
   },
   methods: {
-<<<<<<< HEAD
     copeArticle(){
       return JSON.parse(JSON.stringify(this.articleListCope));
     },
@@ -175,14 +164,6 @@ export default {
         }
       }).catch(err=>{
         ElMessage.error("物品上传失败");
-=======
-    setWaning() {
-      console.log(this.articleList);
-      this.$request({
-        method: "post",
-        url: "/article/add",
-        data: this.articleList,
->>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
       })
         .then(({ data }) => {
           console.log(data);
@@ -213,7 +194,6 @@ export default {
         url: "/comm/upload/file",
         data: formData,
         headers: {
-<<<<<<< HEAD
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then(res=>{
@@ -222,10 +202,6 @@ export default {
         ElMessage.success(res.data.msg);
       }).catch(err=>{
         ElMessage.error("文件过大");
-=======
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
->>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
       })
         .then((res) => {
           // console.log(res,res.data.data.absolutePath);
