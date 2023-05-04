@@ -40,13 +40,39 @@
             </el-table-column>
         </el-table>
         <div class="foot">
+            <div class="foot-left">
+                卖家留言：
+                <el-input v-model="leave" placeholder="请输入留言" style="width: 400px"></el-input>
+            </div>
+            <div class="foot-right">
             <span>选择了{{number}}件商品，共计{{ moeny }}</span>
             <!-- size="large" -->
             <el-button type="primary" @click="settlement()">结算</el-button>
+            </div>
         </div>
       </div>
     </SystemBox>
-    <el-dialog v-model="isSettlement" width="40%" title="结算" align-center>
+    <el-dialog v-model="isSettlement" width="50%" title="结算" align-center>
+        <div class="dialogHeader">
+          <el-button class="addstyle" type="primary" @click="isAddress=true" >新增收货地址</el-button>
+          <el-form label-width="120px">
+            <el-form-item label="收货地址：">
+              <div class="address-box" v-for="(item,index) in AddressList" :key="index" >
+                <div>
+                    <!-- 王自卓，1777403272，湖南省怀化市辰溪县锦滨镇花塘坪村 -->
+                    {{ item.addressName }},
+                    {{ item.addressPhone }},
+                    {{ item.addressInfo }}
+                </div>
+                <div>
+                    <el-button type="primary">编辑</el-button>
+                    <el-button type="primary">删除</el-button>
+                </div>
+              </div>
+              
+            </el-form-item>
+          </el-form>
+        </div>
         <div class="dialogMain">
             <img src="@/assets/img/skm.jpg" alt="支付二维码" width="200">
         </div>
@@ -59,18 +85,55 @@
             </div>
         </template>
     </el-dialog>
-    <el-dialog v-model="isAddress" width="50%" title="地址新增" align-center>
-        
+    <el-dialog v-model="isAddress" width="50%" title="新增地址" align-center>
+        <el-form label-width="120px">
+            <el-form-item label="收货地址：" prop="articleName">
+                <el-input
+                    v-model="AddressPost.addressInfo"
+                    class="w-50 m-2 isInput"
+                    size="large"
+                    placeholder="收货地址"
+                    style="width: 380px"
+                >
+                </el-input>
+            </el-form-item>
+            <el-form-item label="收货人名称：">
+                <el-input
+                    v-model="AddressPost.addressName"
+                    class="w-50 m-2 isInput"
+                    size="large"
+                    placeholder="收货人名称"
+                    style="width: 380px"
+                >
+                </el-input>
+            </el-form-item>
+            <el-form-item label="收货手机号：">
+                <el-input
+                    v-model="AddressPost.addressPhone"
+                    class="w-50 m-2 isInput"
+                    size="large"
+                    placeholder="收货手机号"
+                    style="width: 380px"
+                >
+                </el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button size="large" type="primary" @click="setLogin()" >确定</el-button>
+            </el-form-item>
+        </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import SystemBox from '@/components/SystemBox.vue';
+import AddressAdd from '@/views/address/AddressAdd.vue'
 import { ElMessage } from 'element-plus';
+import AddressAddVue from '../address/AddressAdd.vue';
 export default {
   components:{
     SystemBox,
+    AddressAdd
   },
   data () {
     return {
@@ -78,15 +141,63 @@ export default {
         number:0,
         moeny:0,
         isSettlement:false,
-        isAddress:false
+        isAddress:false,
+        leave:'',//留言
+        Addressradio:'',
+        AddressPost:{
+            addressInfo:'',
+            addressName:'',
+            addressPhone:'',
+        },
+        AddressPostCope:'',
+        AddressList:''
     }
   },
   created() {
+    this.AddressPostCope = this.copeList(this.AddressPost);
     this.setGWC()
+    this.setAddress();
   },
   mounted() {
   },
   methods: {
+    copeList(user){
+        let data = JSON.parse(JSON.stringify(user))
+        return data;
+    },
+    setAddress(){
+        this.$request({
+            url:"/address/list",
+            method:"post",
+            data:{
+                creationTime:"",
+                lastAccessedTime:"",
+                pageNum:1,
+                pageSize:2
+            }
+
+        }).then(({data})=>{
+        //    rows
+            this.AddressList = data.rows
+        })
+    },
+    setLogin(){
+        // this.isAddress = false;
+        this.$request({
+            url:"/address/add",
+            method:"post",
+            data:this.AddressPost
+        }).then(({data})=>{
+            // console.log(data);
+            if(data.code==200&&data.data){
+                ElMessage.success(data.msg)
+                this.isAddress = false;
+                this.AddressPost = this.copeList(this.AddressPostCope)
+            }else{
+                ElMessage.error(data.msg) 
+            }
+        })
+    },
     settlement(){
         this.isSettlement = true;
     },
@@ -170,6 +281,7 @@ export default {
     .infoBox{
         display: flex;
         align-items: center;
+        
         span{
             padding-left: 10px;
         }
@@ -186,8 +298,11 @@ export default {
     }
     .foot{
         margin: 10px 0;
-        text-align: right;
-        padding-right: 25px;
+        // text-align: right;
+        // padding:0 25px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
         span{
             margin-right: 15px;
         }
@@ -195,9 +310,33 @@ export default {
             border-color: #714ea7;
             background-color: #714ea7;
         }
+        &-left,&-right{
+            margin: 0 15px;
+        }
     }
 }
 ::v-deep .el-dialog{
+    .dialogHeader{
+        height: 150px;
+        width: 100%;
+        border: 1px solid #ccc;
+        position: relative;
+        .address-box{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+            padding: 5px; 
+            max-height: 120px;
+            overflow-y:auto ;
+        }
+        .addstyle{
+            position: absolute;
+            right: 0;
+            top: -35px;
+        }
+
+    }
     .dialogMain{
         width: 100%;
         display: flex;
