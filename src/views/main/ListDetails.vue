@@ -72,9 +72,14 @@
           </div>
         </div>
         <div class="row-right">
-          <SystemMain title="热门创作者" typex="1" itemKey1="articleDiscount"
-      itemKey2="articleName" isMove="3" pageSize="3"></SystemMain>
-
+          <SystemMain
+            title="热门创作者"
+            typex="1"
+            itemKey1="articleDiscount"
+            itemKey2="articleName"
+            isMove="3"
+            pageSize="3"
+          ></SystemMain>
         </div>
       </div>
     </div>
@@ -84,12 +89,13 @@
 <script>
 import SystemBox from "@/components/SystemBox.vue";
 import SystemMain from "@/components/SystemMain.vue";
-import {userCheck} from '@/components/global_cont/check'
-import { ElMessage } from 'element-plus';
+import { userCheck } from "@/components/global_cont/check";
+import { ElMessage } from "element-plus";
 
 export default {
   components: {
-    SystemBox,SystemMain
+    SystemBox,
+    SystemMain,
   },
   data() {
     return {
@@ -116,18 +122,18 @@ export default {
   mounted() {},
   methods: {
     addGw() {
-      userCheck('/publish',true)
+      userCheck("/publish", true);
       this.$request({
-        url:"/st/add",
-        method:"post",
-        data:{
+        url: "/st/add",
+        method: "post",
+        data: {
           stArticleCount: this.detailsNum,
-          stArticleId:this.details.id
-        }
-      }).then(({data})=>{
-        console.log("123456",data);
-        ElMessage.success(data.msg)
-      })
+          stArticleId: this.details.id,
+        },
+      }).then(({ data }) => {
+        console.log("123456", data);
+        ElMessage.success(data.msg);
+      });
     },
     getArticle() {
       console.log(this.$route.query.id);

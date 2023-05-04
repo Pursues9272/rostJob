@@ -67,7 +67,7 @@ const routes = [
         name: "Periphery",
         component: () => import("@/views/main/Periphery.vue"),
       },
-      // 
+      //
     ],
   },
   {

@@ -151,7 +151,7 @@ export default {
       console.log(this.$store.state.user.userPhone);
       await this.$request({
         method: "get",
-        url: "/user/getLogin/"+this.$store.state.user.userPhone,
+        url: "/user/getLogin/" + this.$store.state.user.userPhone,
       });
       await this.$request({
         method: "post",

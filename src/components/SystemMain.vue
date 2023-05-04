@@ -6,12 +6,16 @@
       </div>
       <span class="rightName" @click="setMore()">更多</span>
     </div>
-    <div class="Mlist" :style="isMove!=1 ? 'flex-wrap: wrap;' : ''">
+    <div class="Mlist" :style="isMove != 1 ? 'flex-wrap: wrap;' : ''">
       <div
         class="col-xs-2"
         v-for="(item, index) in listData"
         :key="index"
-        :style="isMove!=1 ? {margin:' 0.4%',width: isMove==3 ? '100%' : ''} : {width:'16.4%',margin:'0 0.1%'}"
+        :style="
+          isMove != 1
+            ? { margin: ' 0.4%', width: isMove == 3 ? '100%' : '' }
+            : { width: '16.4%', margin: '0 0.1%' }
+        "
       >
         <div class="card" @click="setDetails(item)">
           <!--  -->
@@ -131,7 +135,7 @@ export default {
         .then((res) => {
           if (res.status == 200)
             // console.log(this.urlList[this.typex - 1], "list=>", res.data.rows);
-          this.listData = res.data.rows;
+            this.listData = res.data.rows;
           this.totalShow = res.data.total;
         })
         .catch((error) => {
@@ -142,7 +146,7 @@ export default {
       let urlid = item.id;
       // if (this.typex == 1) urlid = item.id;
       console.log(this.$route);
-      if(this.isMove==3) {
+      if (this.isMove == 3) {
         let url = this.$router.resolve({
           path: "/details",
           query: {
@@ -150,9 +154,9 @@ export default {
             type: this.typex,
           },
         });
-        window.open(url.href,'_black')
-        this.$router.go(0)
-      }else{
+        window.open(url.href, "_black");
+        this.$router.go(0);
+      } else {
         this.$router.push({
           path: "/details",
           query: {
@@ -161,7 +165,6 @@ export default {
           },
         });
       }
-      
     },
     setMore() {
       // let title = this.typex==1?"约稿":this.typex==2?"制品":"官方周边";
