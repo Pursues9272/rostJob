@@ -12,8 +12,10 @@
       itemKey1="articleDiscount"
       itemKey2="articleName"
     ></SystemMain>
-    <SystemMain title="热门制品" typex="2"
-      itemKey1="articleDiscount"  
+    <SystemMain
+      title="热门制品"
+      typex="2"
+      itemKey1="articleDiscount"
       itemKey2="articleName"
     ></SystemMain>
 

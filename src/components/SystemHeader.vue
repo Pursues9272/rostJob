@@ -29,6 +29,9 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>用户名:{{ item.name }}</el-dropdown-item>
+                <el-dropdown-item @click="address()"
+                  >收货地址</el-dropdown-item
+                >
                 <el-dropdown-item @click="ststemSignout()"
                   >退出</el-dropdown-item
                 >
@@ -53,7 +56,7 @@
         </el-button>
       </div>
       <div class="box-right">
-        <el-button color="#714FA7" style="border-radius: 0">
+        <el-button color="#714FA7" style="border-radius: 0" @click="shopping()">
           <i
             style="margin-right: 5px"
             class="iconfont ic-suppress icon-fl-gouwuche"
@@ -78,8 +81,9 @@
 </template>
 
 <script>
-import { ElMessage } from "element-plus";
-import { Search } from "@element-plus/icons-vue";
+// import { ElMessage } from "element-plus";
+// import { Search } from "@element-plus/icons-vue";
+import {userCheck} from '@/components/global_cont/check'
 export default {
   data() {
     return {
@@ -99,6 +103,10 @@ export default {
         {
           title: "官方周边",
           index: 3,
+        },
+        {
+          title: "用户管理",
+          index: 4,
         },
       ],
       searchVul: "",
@@ -144,6 +152,7 @@ export default {
       let miscellaneous = JSON.parse(
         window.localStorage.getItem("miscellaneous")
       );
+      this.$store.commit('setUser',miscellaneous)
       console.log("miscellaneous=>", miscellaneous);
       if (miscellaneous !== null) {
         this.userList[1].name = miscellaneous.userName;
@@ -159,26 +168,39 @@ export default {
       } else if (item.name === "注册") {
         this.$router.push("/regis");
       } else if (item.name === "发布帖子") {
-        this.$router.push("/publish");
+        // this.$router.push("/publish");
+        userCheck('/publish')
       }
     },
     userNav(item) {
       // console.log("nav--item=>", item);
       if (item.title === "首页") {
         this.$router.push("/");
-      }else if (item.title === "约稿") {
+      } else if (item.title === "约稿") {
         this.$router.push("/more?type=1");
-      }else if (item.title === "制品") {
-        this.$router.push("/more?type=2");
-      }else if (item.title === "约稿") {
-        this.$router.push("/more?type=3");
+      } else if (item.title === "制品") {
+        this.$router.push("/products?type=2");
+      } else if (item.title === "官方周边") {
+        this.$router.push("/periphery?type=3");
+      }else if (item.title === "用户管理") {
+        this.$router.push("/userlist");
       }
     },
     ststemSignout() {
       // 退出系统
       window.localStorage.removeItem("miscellaneous");
+      this.$store.commit("setUser", "");
       this.$router.push("/user");
     },
+    // 点击购物车
+    shopping() {
+      userCheck('/shopping')
+    },
+    // 点击地址
+    address(){
+      userCheck('/address',true)
+      this.$router.push('/address')
+    }
   },
 };
 </script>

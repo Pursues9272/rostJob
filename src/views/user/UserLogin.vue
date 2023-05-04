@@ -80,9 +80,9 @@ export default {
   data() {
     return {
       footDatapur: {
-        username: "",
-        password: "",
-        ident: "",
+        username: "15580755669",
+        password: "123456",
+        ident: "M8k2",
       },
       baseRules: {
         username: [
@@ -121,11 +121,12 @@ export default {
                     "miscellaneous",
                     JSON.stringify(miscellaneous)
                   );
+                  this.$store.commit("setUser", miscellaneous);
                   ElMessage({
                     type: "success",
                     message: list.msg,
                   });
-                  this.$router.push("/user");
+                  this.$router.push("/");
                 } else {
                   ElMessage({
                     type: "warning",

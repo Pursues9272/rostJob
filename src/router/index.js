@@ -13,6 +13,11 @@ const routes = [
         component: () => import("@/views/user/UserLogin.vue"),
       },
       {
+        path: "/userlist",
+        name: "UserList",
+        component: () => import("@/views/user/UserList.vue"),
+      },
+      {
         path: "/regis",
         name: "UserRegister",
         component: () => import("@/views/user/UserRegister.vue"),
@@ -28,6 +33,11 @@ const routes = [
         component: () => import("@/views/main/More.vue"),
       },
       {
+        path: "/products",
+        name: "Products",
+        component: () => import("@/views/main/Products.vue"),
+      },
+      {
         path: "/publish",
         name: "PublishPost",
         component: () => import("@/views/main/PublishPost.vue"),
@@ -37,6 +47,27 @@ const routes = [
         name: "ListDetails",
         component: () => import("@/views/main/ListDetails.vue"),
       },
+      {
+        path: "/shopping",
+        name: "Shopping",
+        component: () => import("@/views/shopping/Home.vue"),
+      },
+      {
+        path: "/address",
+        name: "Address",
+        component: () => import("@/views/address/index.vue"),
+      },
+      {
+        path: "/addressAdd",
+        name: "AddressAdd",
+        component: () => import("@/views/address/AddressAdd.vue"),
+      },
+      {
+        path: "/periphery",
+        name: "Periphery",
+        component: () => import("@/views/main/Periphery.vue"),
+      },
+      // 
     ],
   },
   {

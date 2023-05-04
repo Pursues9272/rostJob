@@ -6,12 +6,12 @@
       </div>
       <span class="rightName" @click="setMore()">更多</span>
     </div>
-    <div class="Mlist" :style="isMove ? 'flex-wrap: wrap;' : ''">
+    <div class="Mlist" :style="isMove!=1 ? 'flex-wrap: wrap;' : ''">
       <div
-        class="col-xs-2" 
+        class="col-xs-2"
         v-for="(item, index) in listData"
         :key="index"
-        :style="isMove ? 'margin: 0.4%;' : 'width:16.4%;margin:0 0.1%'"
+        :style="isMove!=1 ? {margin:' 0.4%',width: isMove==3 ? '100%' : ''} : {width:'16.4%',margin:'0 0.1%'}"
       >
         <div class="card" @click="setDetails(item)">
           <!--  -->
@@ -22,15 +22,18 @@
           <div class="card-heading">
             <span class="pull-right price">￥{{ item[itemKey1] }} </span>
             <span class="pull-left" style="color: #673ab7">
-              <span v-show="item.articleType==1||item.articleType==2"> 【约稿/{{ typeList[item.articleType] }}】 </span>
-              <span v-show="item.articleType!=1&&item.articleType!=2">
-                【 
+              <span v-show="item.articleType == 1 || item.articleType == 2">
+                【约稿/{{ typeList[item.articleType] }}】
+              </span>
+              <span v-show="item.articleType != 1 && item.articleType != 2">
+                【
                 {{ typeList[item.articleType] }}
                 <!-- {{setText}}   -->
                 <!-- {{ item.articleType==1||item.articleType==2?typeList[item.articleType]:'' }}  -->
                 】
               </span>
-              {{ item[itemKey2] }}</span>
+              {{ item[itemKey2] }}</span
+            >
           </div>
         </div>
       </div>
@@ -50,8 +53,9 @@ export default {
       default: 1,
     },
     isMove: {
-      type: Boolean,
-      default: false,
+      type: Number,
+      default: 1,
+      // 三种心态，1 为有头部型，2无头部型，3详情树形
     },
     itemKey1: {
       type: String,
@@ -80,7 +84,7 @@ export default {
         "/article/getByArticleTypeList",
       ],
       // 0:制品|1:绘画|2:文字|3:约稿|4:官方周边
-      typeList:{0:'制品', 1:"绘画",2:"文字",3:'约稿',4:'周边' },
+      typeList: { 0: "制品", 1: "绘画", 2: "文字", 3: "约稿", 4: "周边" },
       totalShow: true,
     };
   },
@@ -90,27 +94,24 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    setText(){
-      console.log(this.typex==1?'约稿':this.typex==2?'制品':'官方周边');
-      return this.typex==1?'约稿':this.typex==2?'制品':'官方周边';
+    setText() {
+      // console.log(
+      //   this.typex == 1 ? "约稿" : this.typex == 2 ? "制品" : "官方周边"
+      // );
+      return this.typex == 1 ? "约稿" : this.typex == 2 ? "制品" : "官方周边";
     },
     setImg(i) {
-<<<<<<< HEAD
-      return require(`@/assets/img/${this.typex}-${i%7 + 1}.jpg`);
-
-=======
       return require(`@/assets/img/${this.typex}-${(i % 7) + 1}.jpg`);
->>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
     },
 
     login() {
-      console.log(this.typex);
+      // console.log(this.typex);
       let data, method;
       if (this.typex == 1) {
         // method = 'post'
         data = {
           // context: "",
-          articleType:3,
+          articleType: 3,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
         };
@@ -129,7 +130,7 @@ export default {
       })
         .then((res) => {
           if (res.status == 200)
-            console.log(this.urlList[this.typex - 1], "list=>", res.data.rows);
+            // console.log(this.urlList[this.typex - 1], "list=>", res.data.rows);
           this.listData = res.data.rows;
           this.totalShow = res.data.total;
         })
@@ -140,23 +141,31 @@ export default {
     setDetails(item) {
       let urlid = item.id;
       // if (this.typex == 1) urlid = item.id;
-      // this.$router.push("/details?id=" + urlid);
-      this.$router.push({
-        path: '/details', 
-        query: {
-          id: urlid,
-          type: this.typex
-        }
-      });
+      console.log(this.$route);
+      if(this.isMove==3) {
+        let url = this.$router.resolve({
+          path: "/details",
+          query: {
+            id: urlid,
+            type: this.typex,
+          },
+        });
+        window.open(url.href,'_black')
+        this.$router.go(0)
+      }else{
+        this.$router.push({
+          path: "/details",
+          query: {
+            id: urlid,
+            type: this.typex,
+          },
+        });
+      }
       
     },
     setMore() {
-<<<<<<< HEAD
       // let title = this.typex==1?"约稿":this.typex==2?"制品":"官方周边";
-      this.$router.push("/more?type="+this.typex);
-=======
-      this.$router.push("/more?name=" + this.title);
->>>>>>> 8d79d893925f1a3040a579e7f833eaabcce14e0f
+      this.$router.push("/more?type=" + this.typex);
     },
   },
 };
@@ -202,8 +211,8 @@ export default {
       border-right: 0;
       border-bottom: 0;
       border-radius: 0;
-      .imgbox{
-        height: 200px;
+      .imgbox {
+        min-height: 200px;
       }
       .card-heading {
         padding: 10px;

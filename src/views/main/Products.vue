@@ -9,13 +9,13 @@
     </div>
 
     <!-- <SystemMain
-      typex="1"
-      itemKey1="userPhone"
-      itemKey2="userName"
-      :pageSize="pageList.pageSize"
-      :pageNum="pageList.pageNum"
-      isMove="2"
-    ></SystemMain> -->
+        typex="1"
+        itemKey1="userPhone"
+        itemKey2="userName"
+        :pageSize="pageList.pageSize"
+        :pageNum="pageList.pageNum"
+        isMove="2"
+      ></SystemMain> -->
     <SystemMain
       :typex="type"
       itemKey1="articleDiscount"
