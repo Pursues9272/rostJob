@@ -11,7 +11,7 @@
         <el-config-provider :locale="local">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
-              <component :is="Component" :key="$route.path" />
+              <component :is="Component" :key="$route.path" ref="mainbox" />
             </transition>
           </router-view>
         </el-config-provider>
@@ -55,6 +55,12 @@ export default {
     
   },
   methods: {
+    Search(){
+      
+      this.$nextTick(()=>{
+        this.$refs.mainbox.search()
+      })
+    },
     clickOt(event) {
       // 单击回归初始状态
       this.$func.unFons(event);

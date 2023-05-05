@@ -103,7 +103,7 @@
           </el-form>
         </div>
       <div class="dialogMain">
-        <img src="@/assets/img/skm.jpg" alt="支付二维码" width="200" />
+        <img :src="require('@/assets/img/skm.jpg')" alt="支付二维码" width="200" />
       </div>
       <template #footer>
         <div class="dialogFooter">

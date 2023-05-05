@@ -56,7 +56,7 @@
     </div>
     <div class="header-box">
       <div class="box-left">
-        <img src="../assets/header/title.png" alt="" />
+        <img :src="require('@/assets/header/title.png')" alt="" />
       </div>
       <div class="box-box">
         <el-input
@@ -64,7 +64,7 @@
           placeholder="物品搜索"
           style="width: 350px"
         />
-        <el-button color="#714FA7" style="border-radius: 0">
+        <el-button color="#714FA7" style="border-radius: 0" @click="search()" >
           <i class="iconfont ic-suppress icon-sousuo"></i>
         </el-button>
       </div>
@@ -191,7 +191,7 @@ export default {
         {
           name: "登录",
           id: 0,
-          img: require("../assets/user/heads.png"),
+          img: require("@/assets/user/heads.png"),
         },
       ],
       isName: false,
@@ -206,7 +206,7 @@ export default {
         },
         {
           name: "我的物品",
-          path: "/address",
+          path: "/article",
         },
         {
           name: "订单记录",
@@ -232,17 +232,27 @@ export default {
       }, 60000);
     }
   },
-  mounted() {},
+  mounted() {
+    if(this.$route.path==this.$route.fullPath){
+      this.initNav()
+    }
+  },
   watch: {
     $route() {
       this.init();
-      console.log("this.$route.path",this.$route.path);
+      console.log("this.$route.path",this.$route);
       if(this.$route.path=='/userlist'||this.$route.path=='/main'||this.$route.path=='/user'){
         this.initNav()
       }
     },
   },
   methods: {
+    search(){
+      // if(this.$route.path!="/search") 
+      this.$router.push("/search")
+      this.$store.commit("setSerach",this.searchVul)
+      this.$parent.Search()
+    },
     initNav(){
       if(this.$store.state.user){
         if (this.$store.state.user.userType === 2) {
@@ -303,7 +313,7 @@ export default {
           },
           {
             name: "我的物品",
-            path: "/address",
+            path: "/article",
           },
           {
             name: "订单记录",
@@ -363,6 +373,7 @@ export default {
       }
     },
     userCu(item) {
+      this.$store.commit("setSerach","")
       console.log("item=>", item);
       if (item.name === "登录") {
         this.$router.push("/user");
@@ -375,6 +386,7 @@ export default {
     },
     userNav(item) {
       // console.log("nav--item=>", item);
+      this.$store.commit("setSerach","")
       if (item.title === "首页") {
         this.$router.push("/");
       } else if (item.title === "约稿") {
@@ -386,7 +398,7 @@ export default {
       } else if (item.title === "用户管理") {
         this.$router.push("/userlist");
       }else if (item.title === "物品管理") {
-        this.$router.push("/article");
+        this.$router.push("/articleuser");
       }else if (item.title === "订单管理") {
         this.$router.push("/indentx");
       }

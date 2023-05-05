@@ -24,7 +24,7 @@
             <img :src="item.articleCover" alt="" />
           </div>
           <div class="card-heading">
-            <span class="pull-right price">￥{{ item[itemKey1] }} </span>
+            <span class="pull-right price">￥{{ item[itemKey1]?item[itemKey1]:item.articlePrice }} </span>
             <span class="pull-left" style="color: #673ab7">
               <span v-show="item.articleType == 1 || item.articleType == 2">
                 【约稿/{{ typeList[item.articleType] }}】
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="paginationBox">
-      <el-pagination v-if="isMove == 2&&total" background layout="total, sizes, prev, pager, next, jumper" :current-page="mainPage.pageNum" 
+      <el-pagination v-if="(isMove == 2||isMove == 4)&&total" background layout="total, sizes, prev, pager, next, jumper" :current-page="mainPage.pageNum" 
       :page-size="mainPage.pageSize" :page-sizes="[10, 20, 40]"    
       @size-change="handleSize"
       @current-change="handleCurrent" :total="total" />
@@ -105,11 +105,17 @@ export default {
     };
   },
   created() {
-    this.login();
+    if(this.isMove!=4) this.login();
+    if(this.$store.state.search&&this.$route.path =='/search') this.search()
   },
   mounted() {},
   computed: {},
   methods: {
+    search(){
+      delete this.mainPage.articleType;
+      this.mainPage.articleName = this.$store.state.search;
+      this.login();
+    },
     handleSize(val){
       this.mainPage.pageNum = 1
       this.mainPage.pageSize = val
@@ -146,7 +152,7 @@ export default {
       //   };
       // }
       this.$request({
-        url: "/article/getByArticleTypeList",
+        url: this.isMove!=4?"/article/getByArticleTypeList":"/article/getByArticleNameList",
         method: "post",
         data: this.mainPage,
       })

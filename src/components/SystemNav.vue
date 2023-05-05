@@ -4,13 +4,13 @@
       <div class="main-left">
         <Splide :options="swOptions">
           <SplideSlide>
-            <img src="../assets/img/0-1.jpg" />
+            <img :src="require('@/assets/img/0-1.jpg')" />
           </SplideSlide>
           <SplideSlide>
-            <img src="../assets/img/0-2.jpg" />
+            <img :src="require('@/assets/img/0-1.jpg')" />
           </SplideSlide>
           <SplideSlide>
-            <img src="../assets/img/0-3.jpg" />
+            <img :src="require('@/assets/img/0-1.jpg')" />
           </SplideSlide>
         </Splide>
       </div>

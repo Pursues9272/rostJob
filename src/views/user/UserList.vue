@@ -12,12 +12,12 @@
                     {{ scope.row.userGender?'女':'男' }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" >
+            <!-- <el-table-column label="操作" >
                 <template #default="scope">
-                    <el-button type="text" @click="image.png(scope.row)">修改</el-button>
+                    <el-button type="text" @click="setUpdata(scope.row)">修改</el-button>
                     <el-button type="text" @click="setMove(scope.row.id)">删除</el-button>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div class="pagination-box">
         <el-pagination background layout="total, sizes, prev, pager, next, jumper" :current-page="userPage.pageNum" 

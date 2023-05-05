@@ -45,7 +45,7 @@
               style="width: 240px"
             >
             </el-input>
-            <img src="../../assets/user/test.png" alt="" />
+            <img :src="require('@/assets/user/test.png')" alt="" />
           </el-form-item>
 
           <el-form-item>

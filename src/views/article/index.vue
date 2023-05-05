@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SystemBox title="物品管理">
+    <SystemBox title="我的物品">
         <el-table
           :data="articleData"
           style="width: 100%"

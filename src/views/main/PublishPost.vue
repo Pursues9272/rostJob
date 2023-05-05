@@ -70,7 +70,7 @@
           <el-input
             v-model="articleList.articleDetails"
             size="large"
-            placeholder="请输入作品简介"
+            placeholder="请输入作品详情"
             type="textarea"
           />
         </el-form-item>
@@ -143,7 +143,7 @@ export default {
         ],
         articleName: [{ required: true, message: "请输入昵称", trigger: "blur" }],
         articlePrice: [{ required: true, message: "请输入金额", trigger: "blur" }],
-        articleDetails: [{ required: true, message: "请输入物品简介", trigger: "blur" }],
+        // articleDetails: [{ required: true, message: "请输入物品详情", trigger: "blur" }],
         articleCover: [{ required: true, message: "请上传封面", trigger: "blur" }],
       },
     };
@@ -160,11 +160,9 @@ export default {
         }).then(({data})=>{
             this.$nextTick(() => {
                 this.articleList = data.data
-                this.articleList.articleId =  id
-      this.articleList.articleIntroduction="123456"
-      this.articleList.articleCount="99"
-      delete this.articleList.id
+                this.articleList.articleType = this.articleList.articleType+"" 
       delete this.articleList.userDTO
+      delete this.articleList.articleSendDate
             });
         })
     },
@@ -193,7 +191,7 @@ export default {
             ElMessage.success(data.msg);
             // this.reset();
            if(this.isAdd) {
-            this.$router.push('/main');
+            this.$router.push('/article');
            }else{
             this.$emit("setUpdata")
            }
