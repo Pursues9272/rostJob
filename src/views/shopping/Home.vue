@@ -211,6 +211,23 @@ export default {
   },
   mounted() {},
   methods: {
+    Move(id){
+        this.$request({
+            url:"/st/remove",
+            method:"post",
+            data:{
+                ids:[id]
+            }
+        }).then(({data})=>{
+            if(data.code==200&&data.data){
+                ElMessage.success(data.msg)
+                this.setGWC()
+            }else{
+                ElMessage.error(data.msg)
+            }
+        })
+        
+    },
     setZF(val){
         this.gwcPost.tag= val;
         this.$request({
@@ -226,6 +243,7 @@ export default {
     // adxx(val){
     //     console.log(val);
     // },
+    
     setUpdata(ids){
         this.$request({
             url:'/address/get/'+ids,

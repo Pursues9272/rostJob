@@ -1,6 +1,6 @@
 <template>
   <div class="login-view">
-    <div class="login-box">
+    <div class="login-box" >
       <div class="box-top">
         <strong>{{ title }}</strong>
       </div>
@@ -19,6 +19,10 @@ export default {
       type: String,
       default: "用户登录",
     },
+    isUpdata:{
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {};
@@ -38,7 +42,8 @@ export default {
   justify-content: center;
 
   .login-box {
-    width: 1170px;
+    // width: 1170px;
+    width: 100%;
     height: 100%;
     flex-flow: column nowrap;
     align-items: center;

@@ -68,10 +68,16 @@ const routes = [
         component: () => import("@/views/main/Periphery.vue"),
       },
       {
-        path: "/indent",
-        name: "Indent",
-        component: () => import("@/views/indent/index.vue"),
+        path: "/indentx",
+        name: "Indentx",
+        component: () => import("@/views/indentx/index.vue"),
       },
+      {
+        path: "/article",
+        name: "Article",
+        component: () => import("@/views/article/index.vue"),
+      },
+      // 
     ],
   },
   {

@@ -75,7 +75,7 @@ export default {
         }
         .addstyle{
             position: absolute;
-            right: 0;
+            right: 20px;
             top: -35px;
         }
 

@@ -12,6 +12,11 @@ import * as func from "./components/global_cont/func";
 import request from "./request";
 import VueSplide from "@splidejs/vue-splide";
 
+
+window.onerror = function (errorMessage, scriptURI, lineNumber, columnNumber, error) {
+  console.log('错误', errorMessage);
+};
+
 axios.defaults.baseURL = "/api";
 
 const app = createApp(App);

@@ -122,8 +122,9 @@ export default {
   mounted() {},
   methods: {
     addGw() {
-      userCheck("/publish", true);
-      this.$request({
+      
+      if(this.$store.state.user){
+        this.$request({
         url: "/st/add",
         method: "post",
         data: {
@@ -141,14 +142,16 @@ export default {
           cancelButtonText: '购物车查看',
           type: 'warning',
         }
-      )
-        .then(() => {
+      ).then(() => {
           this.$router.push('/main')
         })
         .catch(() => {
           this.$router.push('/shopping')
         })
       });
+      }else{
+        userCheck("/publish", true);
+      }
     },
     getArticle() {
       console.log(this.$route.query.id);

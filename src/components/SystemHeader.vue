@@ -127,13 +127,45 @@ export default {
           title: "官方周边",
           index: 3,
         },
+        // {
+        //   title: "用户管理",
+        //   index: 4,
+        // },
+        // {
+        //   title: "物品管理",
+        //   index: 4,
+        // },
+      ],
+      navList1: [
+        {
+          title: "首页",
+          index: 0,
+        },
+        {
+          title: "约稿",
+          index: 1,
+        },
+        {
+          title: "制品",
+          index: 2,
+        },
+        {
+          title: "官方周边",
+          index: 3,
+        },
+      ],
+      navList2:[
         {
           title: "用户管理",
           index: 4,
         },
         {
           title: "物品管理",
-          index: 4,
+          index: 5,
+        },
+        {
+          title: "订单管理",
+          index: 6,
         },
       ],
       searchVul: "",
@@ -178,7 +210,7 @@ export default {
         },
         {
           name: "订单记录",
-          path: "/indent",
+          path: "/indentx",
         },
       ],
       identLevel: 0,
@@ -190,9 +222,10 @@ export default {
   },
   created() {
     this.init();
-    let miscellaneous = JSON.parse(
-      window.localStorage.getItem("miscellaneous")
-    );
+    // let miscellaneous = JSON.parse(
+    //   window.localStorage.getItem("miscellaneous")
+    // );
+    let miscellaneous = this.$store.state.user
     if (miscellaneous) {
       this.timed = window.setInterval(() => {
         this.identAuth();
@@ -203,17 +236,34 @@ export default {
   watch: {
     $route() {
       this.init();
+      console.log("this.$route.path",this.$route.path);
+      if(this.$route.path=='/userlist'||this.$route.path=='/main'||this.$route.path=='/user'){
+        this.initNav()
+      }
     },
   },
   methods: {
+    initNav(){
+      if(this.$store.state.user){
+        if (this.$store.state.user.userType === 2) {
+          // 管理员
+          this.navList=this.navList2;
+        } else {
+          // 普通用户
+          this.navList=this.navList1;
+        }
+      }else{
+        this.navList=this.navList1;
+      }
+    },
     isTrem(item) {
       // 导航集
       if (item.name === "收货地址") {
         this.address();
       } else if (item.name === "消息") {
         this.custService();
-      }else if (item.name === "") {
-        this.custService();
+      }else{
+        this.$router.push(item.path)
       }
     },
     identAuth() {
@@ -236,9 +286,10 @@ export default {
           },
           {
             name: "订单记录",
-            path: "/indent",
+            path: "/indentx",
           },
         ];
+        
       } else {
         // 普通用户
         this.identList = [
@@ -256,7 +307,7 @@ export default {
           },
           {
             name: "订单记录",
-            path: "/indent",
+            path: "/indentx",
           },
         ];
         let purDat = {};
@@ -334,13 +385,18 @@ export default {
         this.$router.push("/periphery?type=3");
       } else if (item.title === "用户管理") {
         this.$router.push("/userlist");
+      }else if (item.title === "物品管理") {
+        this.$router.push("/article");
+      }else if (item.title === "订单管理") {
+        this.$router.push("/indentx");
       }
     },
     ststemSignout() {
       // 退出系统
-      window.localStorage.removeItem("miscellaneous");
+      
       this.$store.commit("setUser", "");
       this.$router.push("/user");
+      window.localStorage.removeItem("miscellaneous");
     },
     // 点击购物车
     shopping() {
@@ -351,10 +407,6 @@ export default {
       userCheck('/address',true)
       this.$router.push('/address')
     },
-    indent(){
-      userCheck('/indent',true)
-      this.$router.push('/indent')
-    }
   },
 };
 </script>

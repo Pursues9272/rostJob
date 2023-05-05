@@ -1,25 +1,26 @@
 <template>
-  <div>
+  <div class="indentx-box">
     <SystemBox title="订单管理">
-        <el-table :data="indentData">
-            <el-table-column prop="orderPrice" label="总价格" />
-            <el-table-column prop="orderType" label="订单状态" >
+        <div class="table-box">
+            <el-table :data="indentData">
+            <el-table-column prop="orderPrice" label="总价格" width="120" />
+            <el-table-column prop="orderType" label="订单状态" width="120" >
                 <template #default="scope">
                     {{ orederType[scope.row.orderType] }}
                 </template>
             </el-table-column>
-            <el-table-column prop="orderAddressDTO.addressName" label="收货人" />
-            <el-table-column prop="orderAddressDTO.addressPhone" label="收货人手机号" />
+            <el-table-column prop="orderAddressDTO.addressName" label="收货人" width="120" />
+            <el-table-column prop="orderAddressDTO.addressPhone" label="收货人手机号"  width="120" />
             <el-table-column prop="orderAddressDTO.addressInfo" label="收货地址" />
-            <el-table-column prop="orderSendDate" label="下单时间" />
-            <el-table-column  label="操作" >
+            <el-table-column prop="orderSendDate" label="下单时间"  width="160" />
+            <el-table-column  label="操作"  >
                 <template #default="scope">
                     <el-button @click="payment(scope.row.id)" type="text">二次支付</el-button>
-                    <el-button @click="details(scope.row.id)"  type="text">详情</el-button>
+                    
                 </template>
             </el-table-column>
-            <!-- payment -->
         </el-table>
+        </div>
     </SystemBox>
   </div>
 </template>
@@ -36,9 +37,9 @@ export default {
     }
   },
   created() {
-    this.setIndent()
   },
   mounted() {
+    this.setIndent()
   },
   methods: {
     setIndent(){
@@ -83,5 +84,10 @@ export default {
 </script>
 
 <style lang='less' scoped>
-
+.indentx-box{
+    width: 100%;
+    .table-box{
+        width: 100%;
+    }
+}
 </style>

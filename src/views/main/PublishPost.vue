@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SystemBox :title="title">
+    <SystemBox :title="title" >
       <el-form :model="articleList"
           :rules="articleRules"
           ref="articleFormRef"
@@ -113,12 +113,12 @@ export default {
     isAdd:{
       type:Boolean,
       default: true
-    }
+    },
   },
   components: { SystemBox },
   data() {
     return {
-      title:this.isAdd?'发帖':'物品修改',
+      title:this.isAdd?'发帖':'修改',
       articleListCope: "",
       articleList: {
         articleName: "", //物品名称*
@@ -149,9 +149,25 @@ export default {
     };
   },
   mounted() {
+    
     this.articleListCope = JSON.parse(JSON.stringify(this.articleList));
   },
   methods: {
+    setUpdatax(id){
+      this.$request({
+            url:"/article/getById/"+id,
+            method:'get'
+        }).then(({data})=>{
+            this.$nextTick(() => {
+                this.articleList = data.data
+                this.articleList.articleId =  id
+      this.articleList.articleIntroduction="123456"
+      this.articleList.articleCount="99"
+      delete this.articleList.id
+      delete this.articleList.userDTO
+            });
+        })
+    },
     copeArticle() {
       return JSON.parse(JSON.stringify(this.articleListCope));
     },
@@ -162,13 +178,13 @@ export default {
       this.$refs[val].validate(async (valid) => {
         if (valid) {
       // console.log(this.$store.state.user.userPhone);
-      await this.$request({
-        method: "get",
-        url: "/user/getLogin/" + this.$store.state.user.userPhone,
-      });
+      // await this.$request({
+      //   method: "get",
+      //   url: "/user/getLogin/" + this.$store.state.user.userPhone,
+      // });
       await this.$request({
         method: "post",
-        url: "/article/add",
+        url: this.isAdd?"/article/add":"/article/edit",
         data: this.articleList,
       })
         .then(({ data }) => {
@@ -176,7 +192,11 @@ export default {
           if (data.code) {
             ElMessage.success(data.msg);
             // this.reset();
-            this.$router.push('/main')
+           if(this.isAdd) {
+            this.$router.push('/main');
+           }else{
+            this.$emit("setUpdata")
+           }
           } else {
             ElMessage.success(data.msg);
           }

@@ -117,16 +117,20 @@ export default {
                 console.log("登录成功", list);
                 if (list.code === 200) {
                   let miscellaneous = list.data;
+                  this.$store.commit("setUser", miscellaneous);
                   window.localStorage.setItem(
                     "miscellaneous",
                     JSON.stringify(miscellaneous)
                   );
-                  this.$store.commit("setUser", miscellaneous);
                   ElMessage({
                     type: "success",
                     message: list.msg,
                   });
-                  this.$router.push("/");
+                  if(list.data.userType!=2){
+                    this.$router.push("/");
+                  }else{
+                    this.$router.push("/userlist");
+                  }
                 } else {
                   ElMessage({
                     type: "warning",

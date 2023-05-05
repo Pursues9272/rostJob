@@ -52,6 +52,7 @@ export default {
   mounted() {
     console.log("妈妈咪呀", this.$route.path);
     // this.init();
+    
   },
   methods: {
     clickOt(event) {
