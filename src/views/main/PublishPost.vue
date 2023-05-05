@@ -1,7 +1,10 @@
 <template>
   <div>
-    <SystemBox title="发帖">
-      <el-form>
+    <SystemBox :title="title">
+      <el-form :model="articleList"
+          :rules="articleRules"
+          ref="articleFormRef"
+          @keyup.enter="submitForm('articleFormRef')">
         <div class="main-title">已有账户</div>
         <el-form-item prop="articleType">
           <el-select
@@ -53,7 +56,7 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item prop="articleDiscount">
+        <el-form-item prop="articleDiscount" v-if="!this.isAdd" >
           <el-input
             v-model="articleList.articleDiscount"
             class="w-50 m-2 isInput"
@@ -71,7 +74,7 @@
             type="textarea"
           />
         </el-form-item>
-        <el-form-item>
+        <el-form-item porp="articleCover">
           <el-upload
             class="avatar-uploader"
             accept="image/png,image/gif,image/jpg,image/jpeg"
@@ -92,7 +95,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item>
-          <el-button size="large" type="primary" @click="setWaning()"
+          <el-button size="large" type="primary" @click="submitForm('articleFormRef')"
             >完成</el-button
           >
           <el-button size="large" @click="reset">重置</el-button>
@@ -104,12 +107,18 @@
 
 <script>
 import SystemBox from "@/components/SystemBox.vue";
-// @ is an alias to /src
-import { ElMessage } from "element-plus";
+import { ElMessage } from 'element-plus';
 export default {
+  props:{
+    isAdd:{
+      type:Boolean,
+      default: true
+    }
+  },
   components: { SystemBox },
   data() {
     return {
+      title:this.isAdd?'发帖':'物品修改',
       articleListCope: "",
       articleList: {
         articleName: "", //物品名称*
@@ -128,12 +137,14 @@ export default {
         { value: "3", label: "约稿" },
         { value: "4", label: "官方周边" },
       ],
-      baseRules: {
-        username: [
-          { required: true, message: "请输入用户名称", trigger: "blur" },
+      articleRules: {
+        articleType: [
+          { required: true, message: "请选择类型", trigger: "blur" },
         ],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        ident: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+        articleName: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+        articlePrice: [{ required: true, message: "请输入金额", trigger: "blur" }],
+        articleDetails: [{ required: true, message: "请输入物品简介", trigger: "blur" }],
+        articleCover: [{ required: true, message: "请上传封面", trigger: "blur" }],
       },
     };
   },
@@ -147,11 +158,13 @@ export default {
     reset() {
       this.articleList = this.copeArticle();
     },
-    async setWaning() {
-      console.log(this.$store.state.user.userPhone);
+     submitForm(val) {
+      this.$refs[val].validate(async (valid) => {
+        if (valid) {
+      // console.log(this.$store.state.user.userPhone);
       await this.$request({
         method: "get",
-        url: "/user/getLogin/"+this.$store.state.user.userPhone,
+        url: "/user/getLogin/" + this.$store.state.user.userPhone,
       });
       await this.$request({
         method: "post",
@@ -162,25 +175,14 @@ export default {
           console.log(data);
           if (data.code) {
             ElMessage.success(data.msg);
-            this.reset();
+            // this.reset();
+            this.$router.push('/main')
           } else {
             ElMessage.success(data.msg);
           }
         })
-        .catch((err) => {
-          ElMessage.error("物品上传失败");
-        })
-        .then(({ data }) => {
-          console.log(data);
-          if (data.code) {
-            ElMessage.success(data.msg);
-          } else {
-            ElMessage.success(data.msg);
-          }
-        })
-        .catch((err) => {
-          ElMessage.error("物品上传失败");
-        });
+      }
+    })
     },
     replace(data) {
       const search = /data/g;
@@ -201,25 +203,12 @@ export default {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      })
-        .then((res) => {
+      }).then((res) => {
           console.log(res, res.data.data.absolutePath);
           this.articleList.articleCover =
-            str + this.replace(res.data.data.absolutePath);
+          process.env.VUE_APP_BASE_API + this.replace(res.data.data.absolutePath);
           ElMessage.success(res.data.msg);
         })
-        .catch((err) => {
-          ElMessage.error("文件过大");
-        })
-        .then((res) => {
-          // console.log(res,res.data.data.absolutePath);
-          this.articleList.articleCover =
-            str + this.replace(res.data.data.absolutePath);
-          ElMessage.success(res.data.msg);
-        })
-        .catch((err) => {
-          ElMessage.error("文件过大");
-        });
     },
   },
 };

@@ -3,9 +3,9 @@
     <header>
       <SystemHeader></SystemHeader>
     </header>
-    <nav v-if="$route.path !== '/user' && $route.path !== '/regis'">
+    <!-- <nav v-if="$route.path !== '/user' && $route.path !== '/regis'">
       <SystemNav></SystemNav>
-    </nav>
+    </nav> -->
     <main>
       <div class="right-box">
         <el-config-provider :locale="local">

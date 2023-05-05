@@ -6,12 +6,16 @@
       </div>
       <span class="rightName" @click="setMore()">更多</span>
     </div>
-    <div class="Mlist" :style="isMove!=1 ? 'flex-wrap: wrap;' : ''">
+    <div class="Mlist" :style="isMove != 1 ? 'flex-wrap: wrap;' : ''">
       <div
         class="col-xs-2"
         v-for="(item, index) in listData"
         :key="index"
-        :style="isMove!=1 ? {margin:' 0.4%',width: isMove==3 ? '100%' : ''} : {width:'16.4%',margin:'0 0.1%'}"
+        :style="
+          isMove != 1
+            ? { margin: ' 0.4%', width: isMove == 3 ? '100%' : '' }
+            : { width: '16.4%', margin: '0 0.1%' }
+        "
       >
         <div class="card" @click="setDetails(item)">
           <!--  -->
@@ -37,6 +41,12 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="paginationBox">
+      <el-pagination v-if="isMove == 2&&total" background layout="total, sizes, prev, pager, next, jumper" :current-page="mainPage.pageNum" 
+      :page-size="mainPage.pageSize" :page-sizes="[10, 20, 40]"    
+      @size-change="handleSize"
+      @current-change="handleCurrent" :total="total" />
     </div>
   </div>
 </template>
@@ -86,6 +96,12 @@ export default {
       // 0:制品|1:绘画|2:文字|3:约稿|4:官方周边
       typeList: { 0: "制品", 1: "绘画", 2: "文字", 3: "约稿", 4: "周边" },
       totalShow: true,
+      mainPage:{
+        articleType: this.typex==1?3:this.typex==2? 0 : 4,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+      },
+      total:0
     };
   },
   created() {
@@ -94,10 +110,16 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+    handleSize(val){
+      this.mainPage.pageNum = 1
+      this.mainPage.pageSize = val
+      this.login()
+    },
+    handleCurrent(val){
+      this.mainPage.pageNum = val
+      this.login()
+    },
     setText() {
-      // console.log(
-      //   this.typex == 1 ? "约稿" : this.typex == 2 ? "制品" : "官方周边"
-      // );
       return this.typex == 1 ? "约稿" : this.typex == 2 ? "制品" : "官方周边";
     },
     setImg(i) {
@@ -106,32 +128,33 @@ export default {
 
     login() {
       // console.log(this.typex);
-      let data, method;
-      if (this.typex == 1) {
-        // method = 'post'
-        data = {
-          // context: "",
-          articleType: 3,
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-        };
-      } else {
-        // method = 'get'
-        data = {
-          articleType: this.typex == 2 ? 0 : 4,
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-        };
-      }
+      // let data, method;
+      // if (this.typex == 1) {
+      //   // method = 'post'
+      //   data = {
+      //     // context: "",
+      //     articleType: 3,
+      //     pageNum: this.pageNum,
+      //     pageSize: this.pageSize,
+      //   };
+      // } else {
+      //   // method = 'get'
+      //   data = {
+      //     articleType: this.typex == 2 ? 0 : 4,
+      //     pageNum: this.pageNum,
+      //     pageSize: this.pageSize,
+      //   };
+      // }
       this.$request({
         url: "/article/getByArticleTypeList",
         method: "post",
-        data: data,
+        data: this.mainPage,
       })
         .then((res) => {
           if (res.status == 200)
             // console.log(this.urlList[this.typex - 1], "list=>", res.data.rows);
-          this.listData = res.data.rows;
+            this.listData = res.data.rows;
+          this.total = res.data.total;
           this.totalShow = res.data.total;
         })
         .catch((error) => {
@@ -142,7 +165,7 @@ export default {
       let urlid = item.id;
       // if (this.typex == 1) urlid = item.id;
       console.log(this.$route);
-      if(this.isMove==3) {
+      if (this.isMove == 3) {
         let url = this.$router.resolve({
           path: "/details",
           query: {
@@ -150,9 +173,9 @@ export default {
             type: this.typex,
           },
         });
-        window.open(url.href,'_black')
-        this.$router.go(0)
-      }else{
+        window.open(url.href, "_black");
+        this.$router.go(0);
+      } else {
         this.$router.push({
           path: "/details",
           query: {
@@ -161,7 +184,6 @@ export default {
           },
         });
       }
-      
     },
     setMore() {
       // let title = this.typex==1?"约稿":this.typex==2?"制品":"官方周边";
@@ -237,5 +259,10 @@ export default {
   .col-xs-2:hover {
     border: 1px solid #6633cc;
   }
+}
+.paginationBox{
+  display: flex;
+  justify-content: right;
+  margin-top: 10px;
 }
 </style>

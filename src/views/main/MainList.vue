@@ -6,6 +6,7 @@
       itemKey1="userPhone"
       itemKey2="userName"
     ></SystemMain> -->
+      <SystemNav></SystemNav>
     <SystemMain
       title="热门创作者"
       typex="1"
@@ -26,9 +27,10 @@
 
 <script>
 import SystemMain from "@/components/SystemMain.vue";
+import SystemNav from '../../components/SystemNav.vue';
 export default {
   components: {
-    SystemMain,
+    SystemMain, SystemNav
   },
   data() {
     return {};

@@ -2,53 +2,78 @@
   <div>
     <SystemBox title="我的购物车">
       <div class="homeMainBox">
-        <el-table :data="shopping" stripe style="width: 100%" @selection-change="handleSelectionChange" >
-            <el-table-column type="selection" width="55" />
-            <el-table-column label="商品信息" >
-              <template #default="scope">
-                <div class="infoBox">
-                    <img style="width:100px;" :src="scope.row.articleDTO.articleCover" alt="">
-                    <span>
-                        {{ scope.row.articleDTO.articleName }}
-                    </span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="articleDTO.articleDiscount" label="价格" />
-            <el-table-column prop="stArticleCount" label="数量" >
-                <template #default="scope">
-                    <!-- {{scope.row.articleDTO.articleDiscount}} -->
-                    <el-input-number
-                      v-model="scope.row.stArticleCount"
-                      :min="1"
-                      :max="10"
-                      @change="handleChange(scope.row.stArticleCount,scope.row)"
-                    />
-                </template> 
-            </el-table-column>
-            <el-table-column label="金额" width="180">
-              <template #default="scope">
-                <div class="moneyText">
-                    {{scope.row.articleDTO.articleDiscount*scope.row.stArticleCount}}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="180">
-              <template #default="scope">
-                <el-button type="text" @click="Move(scope.row.id)" >删除</el-button>
-              </template>
-            </el-table-column>
+        <el-table
+          :data="shopping"
+          stripe
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="55" />
+          <el-table-column label="商品信息">
+            <template #default="scope">
+              <div class="infoBox">
+                <img
+                  style="width: 100px"
+                  :src="scope.row.articleDTO.articleCover"
+                  alt=""
+                />
+                <span>
+                  {{ scope.row.articleDTO.articleName }}
+                </span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="articleDTO.articleDiscount" label="价格" />
+          <el-table-column prop="stArticleCount" label="数量">
+            <template #default="scope">
+              <!-- {{scope.row.articleDTO.articleDiscount}} -->
+              <el-input-number
+                v-model="scope.row.stArticleCount"
+                :min="1"
+                :max="10"
+                @change="handleChange(scope.row.stArticleCount, scope.row)"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="金额" width="180">
+            <template #default="scope">
+              <div class="moneyText">
+                {{
+                  scope.row.articleDTO.articleDiscount *
+                  scope.row.stArticleCount
+                }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="180">
+            <template #default="scope">
+              <el-button type="text" @click="Move(scope.row.id)"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="联系卖家">
+            <template #default="scope">
+              <el-button type="text" @click="userSeller(scope.row.id)"
+                >联系卖家</el-button
+              >
+            </template>
+          </el-table-column>
         </el-table>
         <div class="foot">
-            <div class="foot-left">
-                卖家留言：
-                <el-input v-model="leave" placeholder="请输入留言" style="width: 400px"></el-input>
-            </div>
-            <div class="foot-right">
-            <span>选择了{{number}}件商品，共计{{ moeny }}</span>
+          <div class="foot-left">
+            卖家留言：
+            <el-input
+              v-model="leave"
+              placeholder="请输入留言"
+              style="width: 400px"
+            ></el-input>
+          </div>
+          <div class="foot-right">
+            <span>选择了{{ number }}件商品，共计{{ moeny }}</span>
             <!-- size="large" -->
             <el-button type="primary" @click="settlement()">结算</el-button>
-            </div>
+          </div>
         </div>
       </div>
     </SystemBox>
@@ -77,70 +102,82 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="dialogMain">
-            <img src="@/assets/img/skm.jpg" alt="支付二维码" width="200">
+      <div class="dialogMain">
+        <img src="@/assets/img/skm.jpg" alt="支付二维码" width="200" />
+      </div>
+      <template #footer>
+        <div class="dialogFooter">
+          <el-button type="primary" @click="isSettlement = false">
+            稍后支付</el-button
+          >
+          <el-button type="primary" @click="isSettlement = false"
+            >放弃支付</el-button
+          >
+          <el-button type="primary" @click="isSettlement = false"
+            >我已支付</el-button
+          >
         </div>
-        <template #footer>
-            <div class="dialogFooter">
-                <!-- isSettlement=false -->
-                <el-button type="primary" @click="setZF(1)"
-                > 稍后支付</el-button>
-                <el-button type="primary" @click="setZF(2)">放弃支付</el-button>
-                <el-button type="primary" @click="setZF(0)">我已支付</el-button>
-            </div>
-        </template>
+      </template>
     </el-dialog>
     <el-dialog v-model="isAddress" width="50%" title="新增地址" align-center>
-        <el-form label-width="120px">
-            <el-form-item label="收货地址：" prop="articleName">
-                <el-input
-                    v-model="AddressPost.addressInfo"
-                    class="w-50 m-2 isInput"
-                    size="large"
-                    placeholder="收货地址"
-                    style="width: 380px"
-                >
-                </el-input>
-            </el-form-item>
-            <el-form-item label="收货人名称：">
-                <el-input
-                    v-model="AddressPost.addressName"
-                    class="w-50 m-2 isInput"
-                    size="large"
-                    placeholder="收货人名称"
-                    style="width: 380px"
-                >
-                </el-input>
-            </el-form-item>
-            <el-form-item label="收货手机号：">
-                <el-input
-                    v-model="AddressPost.addressPhone"
-                    class="w-50 m-2 isInput"
-                    size="large"
-                    placeholder="收货手机号"
-                    style="width: 380px"
-                >
-                </el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button size="large" type="primary" @click="setLogin()" >确定</el-button>
-            </el-form-item>
-        </el-form>
+      <el-form label-width="120px">
+        <el-form-item label="收货地址：" prop="articleName">
+          <el-input
+            v-model="AddressPost.addressInfo"
+            class="w-50 m-2 isInput"
+            size="large"
+            placeholder="收货地址"
+            style="width: 380px"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="收货人名称：">
+          <el-input
+            v-model="AddressPost.addressName"
+            class="w-50 m-2 isInput"
+            size="large"
+            placeholder="收货人名称"
+            style="width: 380px"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="收货手机号：">
+          <el-input
+            v-model="AddressPost.addressPhone"
+            class="w-50 m-2 isInput"
+            size="large"
+            placeholder="收货手机号"
+            style="width: 380px"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button size="large" type="primary" @click="setLogin()"
+            >确定</el-button
+          >
+        </el-form-item>
+      </el-form>
     </el-dialog>
+    <MessColls
+      :contisBut="contisBut"
+      @dialogclose="dialogclose"
+      :userItem="userItem"
+    ></MessColls>
   </div>
 </template>
 
 <script>
-import SystemBox from '@/components/SystemBox.vue';
-import AddressAdd from '@/views/address/AddressAdd.vue'
-import { ElMessage } from 'element-plus';
-import AddressAddVue from '../address/AddressAdd.vue';
+import SystemBox from "@/components/SystemBox.vue";
+import AddressAdd from "@/views/address/AddressAdd.vue";
+import MessColls from "../../components/MessColls.vue";
+import { ElMessage } from "element-plus";
 export default {
-  components:{
+  components: {
     SystemBox,
-    AddressAdd
+    AddressAdd,
+    MessColls,
   },
-  data () {
+  data() {
     return {
         shopping:'',
         number:0,
@@ -150,7 +187,6 @@ export default {
             price:"",//结算总价
             addressId:'',//收货地址id
             tag:'',
-            address:''
         },
         isSettlement:false,
         isAddress:false,
@@ -163,16 +199,17 @@ export default {
             tag:''
         },
         AddressPostCope:'',
-        AddressList:''
+        AddressList:'',
+        userItem: "",
+        contisBut: false,
     }
   },
   created() {
     this.AddressPostCope = this.copeList(this.AddressPost);
-    this.setGWC()
+    this.setGWC();
     this.setAddress();
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     setZF(val){
         this.gwcPost.tag= val;
@@ -222,22 +259,21 @@ export default {
         let data = JSON.parse(JSON.stringify(user))
         return data;
     },
-    setAddress(){
-        this.$request({
-            url:"/address/list",
-            method:"post",
-            data:{
-                creationTime:"",
-                lastAccessedTime:"",
-                pageNum:1,
-                pageSize:2
-            }
-
-        }).then(({data})=>{
+    setAddress() {
+      this.$request({
+        url: "/address/list",
+        method: "post",
+        data: {
+          creationTime: "",
+          lastAccessedTime: "",
+          pageNum: 1,
+          pageSize: 2,
+        },
+      }).then(({ data }) => {
         //    rows
             this.AddressList = data.rows
+            console.log(this.AddressList[0].id);
             this.gwcPost.addressId = this.AddressList[0].id
-            this.gwcPost.address = this.AddressList[0].addressInfo
         })
     },
     setLogin(){
@@ -268,19 +304,8 @@ export default {
             ElMessage.warning("没选择结物品")
         }
     },
-    Move(item){
-        this.$request({
-            url:'/st/remove',
-            method:"post",
-            data:{ids:[item] }
-        }).then(({data})=>{
-            if(data.code==200&&data.data){
-                ElMessage.success(data.msg)
-                this.setGWC()
-            }else{
-                ElMessage.error(data.msg)
-            }
-        })
+    handleSelectionChange(val) {
+      console.log(val);
     },
     handleSelectionChange(val){
         // console.log(val);
@@ -341,91 +366,97 @@ export default {
                 ElMessage.error(data.msg)
             }
         })
+    },
+    userSeller(item) {
+      console.log("遍体鳞伤", item);
+      this.userItem = item;
+      this.contisBut = true;
+    },
+    dialogclose(item) {
+      this.contisBut = item;
+    },
+  },
+};
+</script>
+
+<style lang="less" scoped>
+.homeMainBox {
+  // display: flex;
+  width: 100%;
+  .infoBox {
+    display: flex;
+    align-items: center;
          
 
+    span {
+      padding-left: 10px;
+    }
+  }
+  .moneyText {
+    color: red;
+    font-weight: bold;
+  }
+  ::v-deep .el-button--text {
+    color: #46287d;
+    &：hover {
+      color: #46287d;
+    }
+  }
+  .foot {
+    margin: 10px 0;
+    // text-align: right;
+    // padding:0 25px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    span {
+      margin-right: 15px;
+    }
+    ::v-deep .el-button--primary {
+      border-color: #714ea7;
+      background-color: #714ea7;
+    }
+    &-left,
+    &-right {
+      margin: 0 15px;
     }
   }
 }
-
-</script>
-
-<style lang='less' scoped>
-.homeMainBox{
-    // display: flex;
+::v-deep .el-dialog {
+  .dialogHeader {
+    height: 150px;
     width: 100%;
-    .infoBox{
-        display: flex;
-        align-items: center;
-        
-        span{
-            padding-left: 10px;
-        }
+    border: 1px solid #ccc;
+    position: relative;
+    .address-box {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      border-bottom: 1px solid #ccc;
+      padding: 5px;
+      max-height: 120px;
+      overflow-y: auto;
     }
-    .moneyText{
-        color: red;
-        font-weight: bold;
+    .addstyle {
+      position: absolute;
+      right: 0;
+      top: -35px;
     }
-    ::v-deep .el-button--text{
-        color: #46287d;
-        &：hover{
-            color: #46287d;
-        }
-    }
-    .foot{
-        margin: 10px 0;
-        // text-align: right;
-        // padding:0 25px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        span{
-            margin-right: 15px;
-        }
-        ::v-deep .el-button--primary {
-            border-color: #714ea7;
-            background-color: #714ea7;
-        }
-        &-left,&-right{
-            margin: 0 15px;
-        }
-    }
-}
-::v-deep .el-dialog{
-    .dialogHeader{
-        height: 150px;
-        width: 100%;
-        border: 1px solid #ccc;
-        position: relative;
-        .address-box{
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            border-bottom: 1px solid #ccc;
-            padding: 5px; 
-            max-height: 120px;
-            overflow-y:auto ;
-        }
-        .addstyle{
-            position: absolute;
-            right: 0;
-            top: -35px;
-        }
-
-    }
-    .dialogMain{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        border: 1px solid #ccc;
-    }
-    .dialogFooter{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-    }
-    .el-button--primary {
-        border-color: #714ea7;
-        background-color: #714ea7;
-    }
+  }
+  .dialogMain {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #ccc;
+  }
+  .dialogFooter {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  .el-button--primary {
+    border-color: #714ea7;
+    background-color: #714ea7;
+  }
 }
 </style>

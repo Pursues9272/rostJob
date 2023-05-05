@@ -24,17 +24,27 @@
           </div>
           <el-dropdown trigger="click" v-if="item.id === 0">
             <div class="test-cent">
-              <img :src="item.img" alt="" />{{ item.name }}
+              <img :src="item.img" alt="" />
+              <el-badge :value="messNum" class="item" :hidden="messNum < 1">
+                {{ item.name }}
+              </el-badge>
             </div>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>用户名:{{ item.name }}</el-dropdown-item>
-                <el-dropdown-item @click="address()"
+                <!-- <el-dropdown-item @click="address()"
                   >收货地址</el-dropdown-item
                 >
-                <el-dropdown-item @click="indent()"
-                  >订单管理</el-dropdown-item
+                <el-dropdown-item @click="custService()"
+                  >消息</el-dropdown-item
+                > -->
+                <el-dropdown-item
+                  v-for="(item, index) in identList"
+                  :key="index"
+                  @click="isTrem(item)"
                 >
+                  {{ item.name }}
+                </el-dropdown-item>
                 <el-dropdown-item @click="ststemSignout()"
                   >退出</el-dropdown-item
                 >
@@ -80,14 +90,24 @@
         </div>
       </div>
     </div>
+    <MessColls
+      :contisBut="contisBut"
+      @dialogclose="dialogclose"
+      :userItem="userItem"
+    ></MessColls>
   </div>
 </template>
 
 <script>
 // import { ElMessage } from "element-plus";
 // import { Search } from "@element-plus/icons-vue";
-import {userCheck} from '@/components/global_cont/check'
+import { userCheck } from "@/components/global_cont/check";
+import MessColls from "./MessColls.vue";
 export default {
+  name: "SystemHeader",
+  components: {
+    MessColls,
+  },
   data() {
     return {
       navList: [
@@ -109,6 +129,10 @@ export default {
         },
         {
           title: "用户管理",
+          index: 4,
+        },
+        {
+          title: "物品管理",
           index: 4,
         },
       ],
@@ -139,10 +163,41 @@ export default {
         },
       ],
       isName: false,
+      identList: [
+        {
+          name: "消息",
+          path: "/address",
+        },
+        {
+          name: "我的购物车",
+          path: "/shopping",
+        },
+        {
+          name: "我的物品",
+          path: "/address",
+        },
+        {
+          name: "订单记录",
+          path: "/indent",
+        },
+      ],
+      identLevel: 0,
+      messNum: 0,
+      contisBut: false,
+      timed: null,
+      userItem: -2,
     };
   },
   created() {
     this.init();
+    let miscellaneous = JSON.parse(
+      window.localStorage.getItem("miscellaneous")
+    );
+    if (miscellaneous) {
+      this.timed = window.setInterval(() => {
+        this.identAuth();
+      }, 60000);
+    }
   },
   mounted() {},
   watch: {
@@ -151,11 +206,103 @@ export default {
     },
   },
   methods: {
+    isTrem(item) {
+      // 导航集
+      if (item.name === "收货地址") {
+        this.address();
+      } else if (item.name === "消息") {
+        this.custService();
+      }else if (item.name === "") {
+        this.custService();
+      }
+    },
+    identAuth() {
+      // 鉴权
+      let miscellaneous = JSON.parse(
+        window.localStorage.getItem("miscellaneous")
+      );
+      let ident = miscellaneous.userType - 0;
+      this.identLevel = ident;
+      if (ident === 2) {
+        // 管理员
+        this.identList = [
+          {
+            name: "用户管理",
+            path: "/address",
+          },
+          {
+            name: "物品管理",
+            path: "/address",
+          },
+          {
+            name: "订单记录",
+            path: "/indent",
+          },
+        ];
+      } else {
+        // 普通用户
+        this.identList = [
+          {
+            name: "消息",
+            path: "/address",
+          },
+          {
+            name: "我的购物车",
+            path: "/shopping",
+          },
+          {
+            name: "我的物品",
+            path: "/address",
+          },
+          {
+            name: "订单记录",
+            path: "/indent",
+          },
+        ];
+        let purDat = {};
+        // 查询信息红点标识
+        this.$request
+          .post("/ur/getTag", purDat)
+          .then(({ data: list }) => {
+            this.messNum = list.data;
+          })
+          .catch((error) => {
+            console.log("查询信息红点标识error=>", error);
+          });
+      }
+    },
+    custService() {
+      // 消息
+      console.log("消息");
+      let miscellaneous = JSON.parse(
+        window.localStorage.getItem("miscellaneous")
+      );
+      let purDat = {
+        urAddresseeId: miscellaneous.id, // 收信人用户ID
+      };
+      // 已阅去红点功能
+      // this.$request
+      //   .post("/ur/view", purDat)
+      //   .then(({data:list})=>{
+      //     if(list.code === 200){
+      //       this.messNum = 0
+      //     }
+      //   })
+      //   .catch(error=>{
+      //     console.log("已阅去红点功能error=>", error)
+      //   })
+
+      this.contisBut = true;
+      this.userItem = -1;
+    },
+    dialogclose(item) {
+      this.contisBut = item;
+    },
     init() {
       let miscellaneous = JSON.parse(
         window.localStorage.getItem("miscellaneous")
       );
-      this.$store.commit('setUser',miscellaneous)
+      this.$store.commit("setUser", miscellaneous);
       console.log("miscellaneous=>", miscellaneous);
       if (miscellaneous !== null) {
         this.userList[1].name = miscellaneous.userName;
@@ -172,7 +319,7 @@ export default {
         this.$router.push("/regis");
       } else if (item.name === "发布帖子") {
         // this.$router.push("/publish");
-        userCheck('/publish')
+        userCheck("/publish");
       }
     },
     userNav(item) {
@@ -185,7 +332,7 @@ export default {
         this.$router.push("/products?type=2");
       } else if (item.title === "官方周边") {
         this.$router.push("/periphery?type=3");
-      }else if (item.title === "用户管理") {
+      } else if (item.title === "用户管理") {
         this.$router.push("/userlist");
       }
     },
@@ -197,7 +344,7 @@ export default {
     },
     // 点击购物车
     shopping() {
-      userCheck('/shopping')
+      userCheck("/shopping");
     },
     // 点击地址
     address(){
@@ -258,6 +405,8 @@ export default {
           flex-flow: row nowrap;
           align-items: center;
           justify-content: space-between;
+          font-size: 14px;
+          font-weight: 400;
           img {
             width: 30px;
             height: 30px;

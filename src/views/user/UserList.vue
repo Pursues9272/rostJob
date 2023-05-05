@@ -31,13 +31,13 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
-import SystemBox from '../../components/SystemBox.vue'
+import { ElMessage } from "element-plus";
+import SystemBox from "../../components/SystemBox.vue";
 export default {
-  components:{
-    SystemBox
+  components: {
+    SystemBox,
   },
-  data () {
+  data() {
     return {
         userPage:{
             pageNum:1,
@@ -48,19 +48,16 @@ export default {
     }
   },
   created() {
-    this.userList()
+    this.userList();
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     handleSize(val){
-      console.log("handleSize",val);
       this.userPage.pageNum = 1
       this.userPage.pageSize = val
       this.userList()
     },
     handleCurrent(val){
-      console.log("handleCurrent",val);
       this.userPage.pageNum = val
       this.userList()
     },
