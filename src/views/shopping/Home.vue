@@ -57,19 +57,23 @@
           <el-button class="addstyle" type="primary" @click="isAddress=true" >新增收货地址</el-button>
           <el-form label-width="120px">
             <el-form-item label="收货地址：">
+                <!-- <el-radio-group v-model="Addressradio" > -->
+                <el-radio-group v-model="gwcPost.userchatRecordld" >
               <div class="address-box" v-for="(item,index) in AddressList" :key="index" >
                 <div>
                     <!-- 王自卓，1777403272，湖南省怀化市辰溪县锦滨镇花塘坪村 -->
+                  <el-radio :label="item.id">
                     {{ item.addressName }},
                     {{ item.addressPhone }},
                     {{ item.addressInfo }}
+                  </el-radio>
                 </div>
                 <div>
-                    <el-button type="primary">编辑</el-button>
-                    <el-button type="primary">删除</el-button>
+                    <el-button type="primary" @click="setUpdata(item.id)" >编辑</el-button>
+                    <el-button type="primary" @click="setMove(item.id)" >删除</el-button>
                 </div>
               </div>
-              
+            </el-radio-group>
             </el-form-item>
           </el-form>
         </div>
@@ -78,10 +82,11 @@
         </div>
         <template #footer>
             <div class="dialogFooter">
-                <el-button type="primary" @click="isSettlement=false"
+                <!-- isSettlement=false -->
+                <el-button type="primary" @click="setZF(1)"
                 > 稍后支付</el-button>
-                <el-button type="primary" @click="isSettlement=false">放弃支付</el-button>
-                <el-button type="primary" @click="isSettlement=false">我已支付</el-button>
+                <el-button type="primary" @click="setZF(2)">放弃支付</el-button>
+                <el-button type="primary" @click="setZF(0)">我已支付</el-button>
             </div>
         </template>
     </el-dialog>
@@ -140,6 +145,13 @@ export default {
         shopping:'',
         number:0,
         moeny:0,
+        gwcPost:{
+            ids:'',//购物车
+            price:"",//结算总价
+            addressId:'',//收货地址id
+            tag:'',
+            address:''
+        },
         isSettlement:false,
         isAddress:false,
         leave:'',//留言
@@ -148,6 +160,7 @@ export default {
             addressInfo:'',
             addressName:'',
             addressPhone:'',
+            tag:''
         },
         AddressPostCope:'',
         AddressList:''
@@ -161,6 +174,50 @@ export default {
   mounted() {
   },
   methods: {
+    setZF(val){
+        this.gwcPost.tag= val;
+        this.$request({
+            url:"/st/settlement",
+            method:'post',
+            data:this.gwcPost
+        }).then(({data})=>{
+            console.log(data);
+            ElMessage.success(data.msg)
+            this.isSettlement = false;
+        })
+    },
+    // adxx(val){
+    //     console.log(val);
+    // },
+    setUpdata(ids){
+        this.$request({
+            url:'/address/get/'+ids,
+            method:'get'
+        }).then(({data})=>{
+            console.log(data);
+            if(data.code==200){
+            this.AddressPost =data.data
+            this.isAddress= true;
+            }else{
+                ElMessage.success(data.msg)
+            }
+ 
+        })
+    },
+    setMove(ids){
+        this.$request({
+            url:"/address/remove",
+            method:"post",
+            data:{id:ids}
+        }).then(({data})=>{
+            if(data.code==200&& data.data){
+                ElMessage.success(data.msg)
+                this.setAddress();
+            }else{
+                ElMessage.error(data.msg)
+            }
+        })
+    },
     copeList(user){
         let data = JSON.parse(JSON.stringify(user))
         return data;
@@ -179,27 +236,37 @@ export default {
         }).then(({data})=>{
         //    rows
             this.AddressList = data.rows
+            this.gwcPost.addressId = this.AddressList[0].id
+            this.gwcPost.address = this.AddressList[0].addressInfo
         })
     },
     setLogin(){
         // this.isAddress = false;
+       
         this.$request({
-            url:"/address/add",
+            url:!this.AddressPost.id?"/address/add":"/address/edit",
             method:"post",
             data:this.AddressPost
         }).then(({data})=>{
-            // console.log(data);
             if(data.code==200&&data.data){
                 ElMessage.success(data.msg)
                 this.isAddress = false;
                 this.AddressPost = this.copeList(this.AddressPostCope)
+                this.setAddress()
+            //    createImageBitmap
             }else{
                 ElMessage.error(data.msg) 
+                this.setAddress();
             }
         })
+        
     },
     settlement(){
-        this.isSettlement = true;
+        if(this.gwcPost.ids.length>0){
+            this.isSettlement = true;
+        }else{
+            ElMessage.warning("没选择结物品")
+        }
     },
     Move(item){
         this.$request({
@@ -216,16 +283,24 @@ export default {
         })
     },
     handleSelectionChange(val){
-        console.log(val);
+        // console.log(val);
+        let {num,moeny,obj} = this.setNumber(val)
+        this.number = num;
+        this.moeny = moeny;
+        this.gwcPost.ids = obj;
+        this.gwcPost.price = moeny;
+
+
     },
     setNumber(data){
-        let num=0,moeny=0;
+        let num=0,moeny=0,obj=[];
         data.forEach(item => {
+            obj.push(item.id)
             num = num + item.stArticleCount;
             moeny = moeny+(item.articleDTO.articleDiscount*item.stArticleCount)
         });
         // console.log(num,moeny);
-        return {num,moeny};
+        return {num,moeny,obj};
     },
     setGWC(){
         console.log("是否有用户信息",this.$store.state.user.userPhone);
@@ -239,9 +314,9 @@ export default {
         }).then(({data})=>{
             // console.log(data.rows.stArticleCount);
             this.shopping = data.rows;
-            let {num,moeny} = this.setNumber(data.rows)
-            this.number = num;
-            this.moeny = moeny;
+            // let {num,moeny} = this.setNumber(data.rows)
+            // this.number = num;
+            // this.moeny = moeny;
         })
     },
     handleChange(value,item){
@@ -257,9 +332,9 @@ export default {
         }).then(({data})=>{
             if(data.code==200&&data.data){
                 console.log(data);
-                let {num,moeny} = this.setNumber(this.shopping)
-                this.number = num;
-                this.moeny = moeny;
+                // let {num,moeny} = this.setNumber(this.shopping)
+                // this.number = num;
+                // this.moeny = moeny;
                 ElMessage.success(data.msg)
             }else{
                 item.stArticleCount = 1;

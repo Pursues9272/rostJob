@@ -19,7 +19,8 @@
       itemKey2="articleName"
     ></SystemMain>
 
-    <SystemMain title="官方周边" typex="3"></SystemMain>
+    <SystemMain title="官方周边" typex="3" itemKey1="articleDiscount"
+      itemKey2="articleName"></SystemMain>
   </div>
 </template>
 

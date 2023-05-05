@@ -32,6 +32,9 @@
                 <el-dropdown-item @click="address()"
                   >收货地址</el-dropdown-item
                 >
+                <el-dropdown-item @click="indent()"
+                  >订单管理</el-dropdown-item
+                >
                 <el-dropdown-item @click="ststemSignout()"
                   >退出</el-dropdown-item
                 >
@@ -200,6 +203,10 @@ export default {
     address(){
       userCheck('/address',true)
       this.$router.push('/address')
+    },
+    indent(){
+      userCheck('/indent',true)
+      this.$router.push('/indent')
     }
   },
 };

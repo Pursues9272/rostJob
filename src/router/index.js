@@ -67,7 +67,11 @@ const routes = [
         name: "Periphery",
         component: () => import("@/views/main/Periphery.vue"),
       },
-      // 
+      {
+        path: "/indent",
+        name: "Indent",
+        component: () => import("@/views/indent/index.vue"),
+      },
     ],
   },
   {
