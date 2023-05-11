@@ -279,7 +279,8 @@ export default {
     identAuth() {
       // 鉴权
       let miscellaneous = JSON.parse(
-        window.localStorage.getItem("miscellaneous")
+        window.sessionStorage.getItem("miscellaneous")
+        
       );
       let ident = miscellaneous.userType - 0;
       this.identLevel = ident;
@@ -336,7 +337,7 @@ export default {
       // 消息
       console.log("消息");
       let miscellaneous = JSON.parse(
-        window.localStorage.getItem("miscellaneous")
+        window.sessionStorage.getItem("miscellaneous")
       );
       let purDat = {
         urAddresseeId: miscellaneous.id, // 收信人用户ID
@@ -352,7 +353,6 @@ export default {
       //   .catch(error=>{
       //     console.log("已阅去红点功能error=>", error)
       //   })
-
       this.contisBut = true;
       this.userItem = -1;
     },
@@ -361,7 +361,7 @@ export default {
     },
     init() {
       let miscellaneous = JSON.parse(
-        window.localStorage.getItem("miscellaneous")
+        sessionStorage.getItem("miscellaneous")
       );
       this.$store.commit("setUser", miscellaneous);
       console.log("miscellaneous=>", miscellaneous);
@@ -408,7 +408,7 @@ export default {
       
       this.$store.commit("setUser", "");
       this.$router.push("/user");
-      window.localStorage.removeItem("miscellaneous");
+      window.sessionStorage.removeItem("miscellaneous");
     },
     // 点击购物车
     shopping() {

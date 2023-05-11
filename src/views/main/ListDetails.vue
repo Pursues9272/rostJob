@@ -55,7 +55,7 @@
                   </div>
                 </div>
                 <div class="details">
-                  <el-button size="large" type="primary" @click="addGw()"
+                  <el-button size="large" type="primary" @click="addGw()" v-if="details.userDTO.id!=$store.state.user.id"
                     >加入购物车</el-button
                   >
                 </div>
@@ -105,7 +105,7 @@ export default {
           : this.$route.query.type == 2
           ? "制品"
           : "官方周边",
-      details: "",
+      details: {userDTO:{id:0}},
       detailsNum: 1,
     };
   },

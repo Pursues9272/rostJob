@@ -118,10 +118,11 @@ export default {
                 if (list.code === 200) {
                   let miscellaneous = list.data;
                   this.$store.commit("setUser", miscellaneous);
-                  window.localStorage.setItem(
-                    "miscellaneous",
-                    JSON.stringify(miscellaneous)
-                  );
+                  // window.localStorage.setItem(
+                  //   "miscellaneous",
+                  //   JSON.stringify(miscellaneous)
+                  // );
+                  // sessionStorage.setItem('user', JSON.stringify(v));
                   ElMessage({
                     type: "success",
                     message: list.msg,
