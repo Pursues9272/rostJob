@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="rigBottom">
-            <el-input v-model="messInput" placeholder="请输入消息" clearable />
+            <el-input v-model="messInput" placeholder="请输入消息" @keyup.enter="sendMess"  clearable />
             <el-button type="primary" @click="sendMess">发送</el-button>
           </div>
         </div>
@@ -88,6 +88,7 @@ export default {
         console.log(data);
       })
       this.getRecord(id);
+      this.messInit();
     },
     getRecord(id){
       this.$request

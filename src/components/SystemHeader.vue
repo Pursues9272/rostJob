@@ -44,6 +44,9 @@
                   @click="isTrem(item)"
                 >
                   {{ item.name }}
+                  <el-badge v-show="item.name=='消息'" :value="messNum" class="item" :hidden="messNum < 1">
+                {{ item.name }}
+                  </el-badge>
                 </el-dropdown-item>
                 <el-dropdown-item @click="ststemSignout()"
                   >退出</el-dropdown-item
@@ -236,6 +239,7 @@ export default {
     if(this.$route.path==this.$route.fullPath){
       this.initNav()
     }
+    if(this.$store.state.user) this.identAuth();
   },
   watch: {
     $route() {
@@ -358,6 +362,7 @@ export default {
     },
     dialogclose(item) {
       this.contisBut = item;
+      this.identAuth();
     },
     init() {
       let miscellaneous = JSON.parse(

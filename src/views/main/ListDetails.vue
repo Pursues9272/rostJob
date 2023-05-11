@@ -58,6 +58,7 @@
                   <el-button size="large" type="primary" @click="addGw()" v-if="details.userDTO.id!=$store.state.user.id"
                     >加入购物车</el-button
                   >
+                  <el-button v-else size="large" type="primary"  @click="$router.push('/article')">我的物品</el-button>
                 </div>
               </div></el-col
             >

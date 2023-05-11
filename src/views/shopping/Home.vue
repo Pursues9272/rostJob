@@ -54,7 +54,7 @@
           </el-table-column>
           <el-table-column label="联系卖家">
             <template #default="scope">
-              <el-button type="text" @click="userSeller(scope.row.id)"
+              <el-button type="text" @click="userSeller(scope.row.articleDTO.userDTO.id)"
                 >联系卖家</el-button
               >
             </template>
