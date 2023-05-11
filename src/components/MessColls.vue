@@ -61,6 +61,7 @@ export default {
       messInput: "",
       messList: [],//聊天记录
       purList:"",//聊天用户
+      timer:null,
     };
   },
   watch: {
@@ -74,7 +75,14 @@ export default {
       this.getRecord(val);
     },
   },
-  created() {},
+  created() {
+    if (this.contisBut) {
+      this.timer = window.setInterval(() => {
+        this.messInit();
+        if(this.boluserItem) this.setPur()
+      }, 60000);
+    }
+  },
   mounted() {
     this.messInit();
   },
@@ -114,6 +122,9 @@ export default {
     },
     dialogclose() {
       this.netcontisBut = false;
+      if(this.timer) {
+        window.clearInterval(this.timer); //关闭
+      }
       this.$emit("dialogclose", false);
     },
     grobdialogopen() {

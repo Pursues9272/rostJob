@@ -228,7 +228,7 @@ export default {
     // let miscellaneous = JSON.parse(
     //   window.localStorage.getItem("miscellaneous")
     // );
-    let miscellaneous = this.$store.state.user
+    let miscellaneous = this.$store.state.user;
     if (miscellaneous) {
       this.timed = window.setInterval(() => {
         this.identAuth();
