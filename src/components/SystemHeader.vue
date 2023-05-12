@@ -44,9 +44,9 @@
                   @click="isTrem(item)"
                 >
                   {{ item.name }}
-                  <el-badge v-show="item.name=='消息'" :value="messNum" class="item" :hidden="messNum < 1">
+                  <!-- <el-badge v-show="item.name=='消息'" :value="messNum" class="item" :hidden="messNum < 1">
                 {{ item.name }}
-                  </el-badge>
+                  </el-badge> -->
                 </el-dropdown-item>
                 <el-dropdown-item @click="ststemSignout()"
                   >退出</el-dropdown-item

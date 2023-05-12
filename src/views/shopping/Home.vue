@@ -23,7 +23,12 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="articleDTO.articleDiscount" label="价格" />
+          <!-- <el-table-column prop="articleDTO.articleDiscount" label="价格" > -->
+          <el-table-column prop="articleDTO.articleDiscount" label="价格" >
+            <template #default="scope">
+              {{ scope.row.articleDTO.articleDiscount?scope.row.articleDTO.articleDiscount:scope.row.articleDTO.articlePrice }}
+            </template>
+          </el-table-column>
           <el-table-column prop="stArticleCount" label="数量">
             <template #default="scope">
               <!-- {{scope.row.articleDTO.articleDiscount}} -->
@@ -39,9 +44,12 @@
             <template #default="scope">
               <div class="moneyText">
                 {{
-                  scope.row.articleDTO.articleDiscount *
+                  scope.row.articleDTO.articleDiscount?scope.row.articleDTO.articleDiscount *
+                  scope.row.stArticleCount:scope.row.articleDTO.articlePrice *
                   scope.row.stArticleCount
                 }}
+              <!-- {{ scope.row.articleDTO.articleDiscount?scope.row.articleDTO.articleDiscount:scope.row.articleDTO.articlePrice }} -->
+
               </div>
             </template>
           </el-table-column>
@@ -340,7 +348,9 @@ export default {
         data.forEach(item => {
             obj.push(item.id)
             num = num + item.stArticleCount;
-            moeny = moeny+(item.articleDTO.articleDiscount*item.stArticleCount)
+            // moeny = moeny+(item.articleDTO.articleDiscount*item.stArticleCount)
+            moeny = moeny+(item.articleDTO.articleDiscount?item.articleDTO.articleDiscount *
+            item.stArticleCount:item.articleDTO.articlePrice * item.stArticleCount)
         });
         // console.log(num,moeny);
         return {num,moeny,obj};
